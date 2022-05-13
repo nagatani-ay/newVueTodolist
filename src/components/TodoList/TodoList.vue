@@ -2,7 +2,7 @@
   <div>title</div>
   <div>
     <ul>
-      <todo-item v-for="todo in todolist"></todo-item>
+      <todo-item v-for="todo in list"></todo-item>
     </ul>
   </div>
 </template>
@@ -15,7 +15,7 @@ export default {
   data() {
     return {};
   },
-  props: ['todolist'],
+  props: ['list'],
   emits: [],
 };
 </script>

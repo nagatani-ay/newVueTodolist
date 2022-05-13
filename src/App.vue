@@ -7,7 +7,7 @@
     <div>
       <todo-list
         v-if="showContent == 'todolist'"
-        :todolist="filteredlist"
+        :list="filteredlist"
       ></todo-list>
     </div>
   </div>
