@@ -11,8 +11,8 @@
 </template>
 
 <script>
-import SideMenu from './components/SideMenu.vue';
-import TodoList from './components/ToDoList.vue';
+import SideMenu from './components/SideMenu/SideMenu.vue';
+import TodoList from './components/TodoList/TodoList.vue';
 
 export default {
   name: 'App',
@@ -23,7 +23,7 @@ export default {
   data() {
     return {
       contentsList: ['todolist'],
-      showContent: '',
+      showContent: 'todolist',
     };
   },
   methods: {},

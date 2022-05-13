@@ -3,8 +3,8 @@
   <div class="SideMenu" v-if="isOpen">
     <ul>
       <li @click="$emit('select:content', 'todolist')">todolist</li>
-      <li>item</li>
-      <li>item</li>
+      <li @click="$emit('select:content', 'todolist')">name</li>
+      <li @click="$emit('select:content', 'todolist')">name</li>
     </ul>
   </div>
 </template>
