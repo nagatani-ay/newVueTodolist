@@ -1,15 +1,16 @@
 <template>
-  <li @click="$emit('select:content', 'menu')">{{ menu }}</li>
+  <li @click="$emit('select:content', menuName)">{{ menuName }}</li>
 </template>
 
 <script>
 export default {
-  name: 'todolist',
+  name: 'menuitem',
   components: {},
   data() {
     return {};
   },
-  props: ['menu'],
+  props: ['menuName'],
+  emits: ['select:content'],
 };
 </script>
 

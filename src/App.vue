@@ -1,11 +1,14 @@
 <template>
   <div id="container">
     <div class="sidemenu">
-      <side-menu @select:content="showContent = $event"></side-menu>
+      <side-menu @showContent="showContent = $event"></side-menu>
     </div>
 
     <div>
-      <todo-list v-if="showContent == 'todolist'"></todo-list>
+      <todo-list
+        v-if="showContent == 'todolist'"
+        :todolist="filteredlist"
+      ></todo-list>
     </div>
   </div>
 </template>
@@ -23,10 +26,21 @@ export default {
   data() {
     return {
       contentsList: ['todolist'],
+      todoList: [],
       showContent: 'todolist',
     };
   },
-  methods: {},
+  methods: {
+    test(e) {
+      console.log(e);
+    },
+  },
+  computed: {
+    filteredlist() {
+      const filter_list = this.todolist;
+      return filter_list;
+    },
+  },
 };
 </script>
 

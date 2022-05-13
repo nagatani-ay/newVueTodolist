@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: 'todoitem',
+  name: 'todolist-item',
   components: {},
   data() {
     return {};

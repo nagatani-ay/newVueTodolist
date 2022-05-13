@@ -2,7 +2,10 @@
   <button @click="isOpen = !isOpen">=</button>
   <div class="SideMenu" v-if="isOpen">
     <ul>
-      <menu-item :menu="todolist"></menu-item>
+      <menu-item
+        @select:content="$emit('showContent', $event)"
+        menuName="todolist"
+      ></menu-item>
     </ul>
   </div>
 </template>
@@ -18,7 +21,8 @@ export default {
     };
   },
   props: [],
-  emits: ['select:content'],
+  emits: ['showContent'],
+  methods: {},
 };
 </script>
 
@@ -26,7 +30,6 @@ export default {
 .SideMenu {
   display: flex;
   flex-direction: column;
-  border: solid 1px #000000;
 }
 li:hover {
   background-color: #f5f5f5;
