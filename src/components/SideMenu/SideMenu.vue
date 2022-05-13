@@ -2,17 +2,16 @@
   <button @click="isOpen = !isOpen">=</button>
   <div class="SideMenu" v-if="isOpen">
     <ul>
-      <li @click="$emit('select:content', 'todolist')">todolist</li>
-      <li @click="$emit('select:content', 'todolist')">name</li>
-      <li @click="$emit('select:content', 'todolist')">name</li>
+      <menu-item :menu="todolist"></menu-item>
     </ul>
   </div>
 </template>
 
 <script>
+import MenuItem from './MenuItem.vue';
 export default {
   name: 'sidemenu',
-  components: {},
+  components: { MenuItem },
   data() {
     return {
       isOpen: false,
