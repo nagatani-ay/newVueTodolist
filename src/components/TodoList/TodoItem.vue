@@ -1,6 +1,6 @@
 <template>
   <li>
-    <custom-button :BtnText="taaa"></custom-button>
+    <custom-button BtnText="btn"></custom-button>
 
     {{ todo.text }}
   </li>
