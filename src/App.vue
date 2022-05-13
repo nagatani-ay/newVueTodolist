@@ -26,7 +26,12 @@ export default {
   data() {
     return {
       contentsList: ['todolist'],
-      todoList: [],
+      todoList: [
+        { index: 0, text: 'this is test', status: false, time: 'none' },
+        { index: 1, text: 'wryyyy', status: false, time: 'none' },
+        { index: 3, text: 'gaaaa', status: false, time: 'none' },
+        { index: 4, text: 'buuuu', status: false, time: 'none' },
+      ],
       showContent: 'todolist',
     };
   },
@@ -37,7 +42,7 @@ export default {
   },
   computed: {
     filteredlist() {
-      const filter_list = this.todolist;
+      const filter_list = this.todoList;
       return filter_list;
     },
   },

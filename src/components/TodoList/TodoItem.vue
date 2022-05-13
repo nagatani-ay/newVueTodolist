@@ -1,14 +1,20 @@
 <template>
-  <li>todolist1</li>
+  <li>
+    <custom-button :BtnText="taaa"></custom-button>
+
+    {{ todo.text }}
+  </li>
 </template>
 
 <script>
+import CustomButton from '../Form/Button.vue';
 export default {
-  name: 'todolist-item',
-  components: {},
+  name: 'TodoItem-Component',
+  components: { CustomButton },
   data() {
     return {};
   },
+  props: ['todo'],
 };
 </script>
 
