@@ -2,7 +2,7 @@
   <button @click="isOpen = !isOpen">=</button>
   <div class="SideMenu" v-if="isOpen">
     <ul>
-      <li @click="$emit('setContent', 'todolist')">todolist</li>
+      <li @click="$emit('select:content', 'todolist')">todolist</li>
       <li>item</li>
       <li>item</li>
     </ul>
@@ -18,6 +18,8 @@ export default {
       isOpen: false,
     };
   },
+  props: [],
+  emits: ['select:content'],
 };
 </script>
 

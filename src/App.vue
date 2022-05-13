@@ -1,7 +1,7 @@
 <template>
   <div id="container">
     <div class="sidemenu">
-      <side-menu></side-menu>
+      <side-menu @select:content="showContent = $event"></side-menu>
     </div>
 
     <div>
@@ -23,9 +23,10 @@ export default {
   data() {
     return {
       contentsList: ['todolist'],
-      showContent: 'todolist',
+      showContent: '',
     };
   },
+  methods: {},
 };
 </script>
 

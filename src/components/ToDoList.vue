@@ -1,11 +1,17 @@
 <template>
-  <div>test</div>
+  <div>title</div>
+  <div>
+    <ul>
+      <todo-item></todo-item>
+    </ul>
+  </div>
 </template>
 
 <script>
+import TodoItem from './TodoItem.vue';
 export default {
   name: 'todolist',
-  components: {},
+  components: { TodoItem },
   data() {
     return {};
   },
