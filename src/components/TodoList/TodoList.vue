@@ -5,6 +5,7 @@
       <todo-item v-for="todo in list" :todo="todo"></todo-item>
     </ul>
   </div>
+  <button @click="test">list</button>
 </template>
 
 <script>
@@ -17,6 +18,11 @@ export default {
   },
   props: ['list'],
   emits: [],
+  methods: {
+    test() {
+      console.log(this.list);
+    },
+  },
 };
 </script>
 
