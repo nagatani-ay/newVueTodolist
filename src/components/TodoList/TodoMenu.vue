@@ -1,15 +1,17 @@
 <template>
   <div class="todo__menu">
-    <custom-button
-      class="addMenuButton"
-      BtnText="add"
-      v-if="!isOpen"
-      @click="toggleMenu()"
-    ></custom-button>
-    <div v-if="isOpen">
-      <custom-button BtnText="cancel" @click="toggleMenu()"></custom-button>
-      <custom-textinput v-model="tempText"></custom-textinput>
-      <custom-button BtnText="Add" @click="CreateItem()"></custom-button>
+    <div class="todo__addMenu">
+      <custom-button
+        class="addMenuButton"
+        BtnText="add"
+        v-if="!isOpen"
+        @click="toggleMenu()"
+      ></custom-button>
+      <div v-if="isOpen">
+        <custom-button BtnText="cancel" @click="toggleMenu()"></custom-button>
+        <custom-textinput v-model="tempText"></custom-textinput>
+        <custom-button BtnText="Add" @click="CreateItem()"></custom-button>
+      </div>
     </div>
     <div class="todo__menu__item">
       <custom-select :sortList="sortList"></custom-select>
@@ -79,7 +81,14 @@ export default {
   display: flex;
 }
 
-.todo__addMenu__Button {
+.todo__addMenu {
+  width: 100%;
+  text-align: center;
+  position: fixed;
+  right: 0;
+  bottom: 0;
+}
+.addMenuButton {
   position: relative;
   left: 85%;
   display: block;

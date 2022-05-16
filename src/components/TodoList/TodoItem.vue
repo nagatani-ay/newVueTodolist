@@ -21,8 +21,8 @@
     </div>
     <div class="todo__item" v-if="!isEdit">
       <custom-checkbox v-model="todo.status"></custom-checkbox>
-      <p>{{ todo.text }}</p>
-      <p>{{ todo.time }}</p>
+      <p class="item__text">{{ todo.text }}</p>
+      <p class="item__time">{{ todo.time }}</p>
     </div>
   </li>
 </template>

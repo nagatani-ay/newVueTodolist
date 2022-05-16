@@ -136,7 +136,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 ul,
 li {
   list-style: none;
@@ -147,6 +147,15 @@ li,
 p {
   padding: 0;
   margin: 0;
+}
+
+button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  margin: 0 5px;
+  appearance: none;
 }
 
 #container {
