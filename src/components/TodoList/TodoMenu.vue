@@ -2,8 +2,8 @@
   <div class="todo__menu">
     <div class="todo__addMenu">
       <custom-button
+        BtnText=""
         class="addMenuButton"
-        BtnText="add"
         v-if="!isOpen"
         @click="toggleMenu()"
       ></custom-button>
@@ -47,7 +47,7 @@ import CustomTextinput from '../Form/TextInput.vue';
 import CustomSelect from '../Form/SortSelector.vue';
 import RadioButton from '../Form/RadioButton.vue';
 
-const sortType = ['Text', 'Status'];
+const sortType = ['Text', 'Status', 'Deadline'];
 const filterType = ['全', '完', '未'];
 
 export default {
@@ -61,6 +61,8 @@ export default {
   methods: {
     toggleMenu() {
       this.isOpen = !this.isOpen;
+      this.tempText = '';
+      this.deadline = '';
     },
     CreateItem() {
       if (this.tempText == '') {
@@ -105,7 +107,7 @@ export default {
   position: relative;
   left: 85%;
   display: block;
-  background-image: url(../img/addButton.png);
+  background-image: url(https://stackblitz.com/files/vue-7r2a4b/github/nagatani-ay/newVueTodolist/master/src/img/addButton.png);
   width: 50px;
   height: 50px;
   background-repeat: no-repeat;

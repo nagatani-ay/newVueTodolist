@@ -1,5 +1,4 @@
 <template>
-  
   <li>
     <custom-button :BtnText="EditBtnText" @click="onEdit()"></custom-button>
     <div class="todo__edititem" v-if="isEdit">
@@ -28,7 +27,6 @@
       ></custom-checkbox>
       <p class="item__text">{{ todo.text }}</p>
       <p class="item__time">{{ todo.time }}</p>
-      <p class="item__deadline">{{ todo.deadline }}</p>
     </div>
   </li>
 </template>
