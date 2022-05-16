@@ -8,8 +8,6 @@
       <todo-list
         v-if="showContent == 'todolist'"
         :filteredTodoList="filteredTodoList"
-        :sortList="sorts"
-        :filteList="filters"
         @delete:item="onDelete"
         @update:item="onUpdate"
         @create:item="onCreate"
@@ -37,8 +35,6 @@ export default {
         { index: 2, text: 'test3', status: true, time: 'none' },
         { index: 3, text: 'test4', status: false, time: 'none' },
       ],
-      sorts: ['Text', 'Status'],
-      filters: ['All', 'Completed', 'inCompleted'],
       showContent: 'todolist',
     };
   },

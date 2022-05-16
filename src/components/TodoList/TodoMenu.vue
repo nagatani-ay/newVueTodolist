@@ -11,6 +11,12 @@
       <custom-button BtnText="Add" @click="CreateItem()"></custom-button>
     </div>
     <custom-select :sortList="sortList"></custom-select>
+    <radio-button
+      v-for="filterItem in filterList"
+      :filter="filterItem"
+      group="FilterMenu"
+      v-model="selectSort"
+    ></radio-button>
   </div>
 </template>
 
@@ -18,14 +24,18 @@
 import CustomButton from '../Form/Button.vue';
 import CustomTextinput from '../Form/TextInput.vue';
 import CustomSelect from '../Form/SortSelector.vue';
+import RadioButton from '../Form/RadioButton.vue';
+
+const sortType = ['Text', 'Status'];
+const filterType = ['All', 'Completed', 'inCompleted'];
 
 export default {
   name: 'TodoMenu-Component',
-  components: { CustomButton, CustomTextinput, CustomSelect },
+  components: { CustomButton, CustomTextinput, CustomSelect, RadioButton },
   data() {
-    return { isOpen: false, tempText: '' };
+    return { isOpen: false, tempText: '', selectSort: 'All' };
   },
-  props: ['todo', 'sortList'],
+  props: ['todo'],
   emits: ['create:item'],
   methods: {
     toggleMenu() {
@@ -38,6 +48,18 @@ export default {
         this.$emit('create:item', this.tempText);
         this.toggleMenu();
       }
+    },
+  },
+  computed: {
+    filterList: {
+      get() {
+        return filterType;
+      },
+    },
+    sortList: {
+      get() {
+        return sortType;
+      },
     },
   },
 };
