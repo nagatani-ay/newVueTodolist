@@ -2,6 +2,7 @@
   <label>
     <input
       type="radio"
+      :id="filter"
       :value="filter"
       name="group"
       :checked="modelValue == filter"

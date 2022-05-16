@@ -1,6 +1,7 @@
 <template>
   <div class="todo__menu">
     <custom-button
+      class="addMenuButton"
       BtnText="add"
       v-if="!isOpen"
       @click="toggleMenu()"
@@ -21,6 +22,7 @@
           :filter="filterItem"
           group="FilterMenu"
           v-model="selectSort"
+          @update:modelValue="$emit('update:filter', selectSort)"
         ></radio-button>
       </label>
     </div>
@@ -43,7 +45,7 @@ export default {
     return { isOpen: false, tempText: '', selectSort: '全' };
   },
   props: ['todo'],
-  emits: ['create:item'],
+  emits: ['create:item', 'update:filter'],
   methods: {
     toggleMenu() {
       this.isOpen = !this.isOpen;
@@ -75,5 +77,16 @@ export default {
 <style>
 .todo__menu {
   display: flex;
+}
+
+.todo__addMenu__Button {
+  position: relative;
+  left: 85%;
+  display: block;
+  background-image: url(../img/addButton.png);
+  width: 50px;
+  height: 50px;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
 }
 </style>

@@ -3,8 +3,9 @@
   <div class="SideMenu" v-if="isOpen">
     <ul>
       <menu-item
+        v-for="menuItem in contentList"
         @select:content="$emit('showContent', $event)"
-        menuName="todolist"
+        :menuName="menuItem"
       ></menu-item>
     </ul>
   </div>
@@ -12,6 +13,7 @@
 
 <script>
 import MenuItem from './MenuItem.vue';
+const contentList = ['TodoList', 'Flow'];
 export default {
   name: 'sidemenu',
   components: { MenuItem },
@@ -23,6 +25,13 @@ export default {
   props: [],
   emits: ['showContent'],
   methods: {},
+  computed: {
+    contentList: {
+      get() {
+        return contentList;
+      },
+    },
+  },
 };
 </script>
 

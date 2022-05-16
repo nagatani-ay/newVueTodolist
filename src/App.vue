@@ -5,12 +5,14 @@
     </div>
 
     <div class="mainContent">
+      <h1>{{ showContent }}</h1>
       <todo-list
-        v-if="showContent == 'todolist'"
+        v-if="showContent == 'TodoList'"
         :filteredTodoList="filteredTodoList"
         @delete:item="onDelete"
         @update:item="onUpdate"
         @create:item="onCreate"
+        @update:filter="filter_select = $event"
       ></todo-list>
     </div>
   </div>
@@ -28,14 +30,15 @@ export default {
   },
   data() {
     return {
-      contentsList: ['todolist'],
       todoList: [
         { index: 0, text: 'test1', status: false, time: 'none' },
         { index: 1, text: 'test2', status: false, time: 'none' },
         { index: 2, text: 'test3', status: true, time: 'none' },
         { index: 3, text: 'test4', status: false, time: 'none' },
       ],
-      showContent: 'todolist',
+      showContent: 'TodoList',
+
+      filter_select: '全',
     };
   },
   methods: {
@@ -68,13 +71,13 @@ export default {
     },
 
     getTime() {
-      let today = new Date();
-      let year = today.getFullYear();
-      let month = today.getMonth() + 1;
-      let day = today.getDate();
-      let hour = today.getHours();
-      let minute = today.getMinutes();
-      let second = today.getSeconds();
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = today.getMonth() + 1;
+      const day = today.getDate();
+      const hour = today.getHours();
+      const minute = today.getMinutes();
+      const second = today.getSeconds();
       return (
         year +
         '/' +
@@ -93,8 +96,40 @@ export default {
   computed: {
     filteredTodoList: {
       get() {
-        const list = this.todoList;
-        return list;
+        const filtered_list = [];
+        if (this.filter_select == '全') {
+          this.todoList.forEach((todo, i) => {
+            filtered_list.push({
+              index: i,
+              text: todo.text,
+              status: todo.stat,
+              time: todo.time,
+            });
+          });
+        } else if (this.filter_select == '済') {
+          this.todoList.forEach((todo, i) => {
+            if (todo.status == true) {
+              filtered_list.push({
+                index: i,
+                text: todo.text,
+                status: todo.stat,
+                time: todo.time,
+              });
+            }
+          });
+        } else if (this.filter_select == '未') {
+          this.todoList.forEach((todo, i) => {
+            if (todo.status == false) {
+              filtered_list.push({
+                index: i,
+                text: todo.text,
+                status: todo.stat,
+                time: todo.time,
+              });
+            }
+          });
+        }
+        return filtered_list;
       },
     },
   },

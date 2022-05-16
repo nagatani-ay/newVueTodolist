@@ -1,7 +1,9 @@
 <template>
-  <div>title</div>
   <div>
-    <todo-menu @create:item="$emit('create:item', $event)"></todo-menu>
+    <todo-menu
+      @create:item="$emit('create:item', $event)"
+      @update:filter="$emit('update:filter', $event)"
+    ></todo-menu>
   </div>
   <div>
     <ul>
@@ -25,7 +27,7 @@ export default {
     return {};
   },
   props: ['filteredTodoList'],
-  emits: ['update:item', 'delete:item', 'create:item'],
+  emits: ['update:item', 'delete:item', 'create:item', 'update:filter'],
   methods: {},
 };
 </script>
@@ -36,6 +38,4 @@ ul {
   flex-direction: column;
   width: 100%;
 }
-
-
 </style>
