@@ -8,6 +8,8 @@
       <todo-list
         v-if="showContent == 'todolist'"
         :filteredTodoList="filteredTodoList"
+        :sortList="sorts"
+        :filteList="filters"
         @delete:item="onDelete"
         @update:item="onUpdate"
         @create:item="onCreate"
@@ -35,10 +37,15 @@ export default {
         { index: 2, text: 'test3', status: true, time: 'none' },
         { index: 3, text: 'test4', status: false, time: 'none' },
       ],
+      sorts: ['Text', 'Status'],
+      filters: ['All', 'Completed', 'inCompleted'],
       showContent: 'todolist',
     };
   },
   methods: {
+    test(e) {
+      console.log(e);
+    },
     onDelete(num) {
       let check = confirm('本当に削除してもよろしいですか？');
       if (check) {
@@ -64,7 +71,6 @@ export default {
       });
     },
   },
-
   computed: {
     filteredTodoList() {
       const list = this.todoList;

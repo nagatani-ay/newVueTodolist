@@ -1,7 +1,11 @@
 <template>
   <div>title</div>
   <div>
-    <todo-menu @create:item="$emit('create:item', $event)"></todo-menu>
+    <todo-menu
+      @create:item="$emit('create:item', $event)"
+      :sortList="sortList"
+      :filteList="filterList"
+    ></todo-menu>
   </div>
   <div>
     <ul>
@@ -24,7 +28,7 @@ export default {
   data() {
     return {};
   },
-  props: ['filteredTodoList'],
+  props: ['filteredTodoList', 'sortList', 'filterList'],
   emits: ['update:item', 'delete:item', 'create:item'],
   methods: {},
 };

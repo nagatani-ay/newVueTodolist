@@ -11,7 +11,6 @@
       <custom-button BtnText="Add" @click="CreateItem()"></custom-button>
     </div>
     <custom-select :sortList="sortList"></custom-select>
-    <radio-button></radio-button>
   </div>
 </template>
 
@@ -19,15 +18,14 @@
 import CustomButton from '../Form/Button.vue';
 import CustomTextinput from '../Form/TextInput.vue';
 import CustomSelect from '../Form/SortSelector.vue';
-import RadioButton from '../Form/RadioButton.vue';
 
 export default {
   name: 'TodoMenu-Component',
-  components: { CustomButton, CustomTextinput, CustomSelect, Radiobutton },
+  components: { CustomButton, CustomTextinput, CustomSelect },
   data() {
     return { isOpen: false, tempText: '' };
   },
-  props: ['todo'],
+  props: ['todo', 'sortList'],
   emits: ['create:item'],
   methods: {
     toggleMenu() {
