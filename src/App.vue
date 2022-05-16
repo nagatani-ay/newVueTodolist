@@ -29,8 +29,8 @@ export default {
       todoList: [
         { index: 0, text: 'test1', status: false, time: 'none' },
         { index: 1, text: 'test2', status: false, time: 'none' },
-        { index: 3, text: 'test3', status: true, time: 'none' },
-        { index: 4, text: 'test4', status: false, time: 'none' },
+        { index: 2, text: 'test3', status: true, time: 'none' },
+        { index: 3, text: 'test4', status: false, time: 'none' },
       ],
       showContent: 'todolist',
     };
