@@ -27,10 +27,10 @@ export default {
     return {
       contentsList: ['todolist'],
       todoList: [
-        { index: 0, text: 'this is test', status: false, time: 'none' },
-        { index: 1, text: 'wryyyy', status: false, time: 'none' },
-        { index: 3, text: 'gaaaa', status: false, time: 'none' },
-        { index: 4, text: 'buuuu', status: false, time: 'none' },
+        { index: 0, text: 'test1', status: false, time: 'none' },
+        { index: 1, text: 'test2', status: false, time: 'none' },
+        { index: 3, text: 'test3', status: true, time: 'none' },
+        { index: 4, text: 'test4', status: false, time: 'none' },
       ],
       showContent: 'todolist',
     };

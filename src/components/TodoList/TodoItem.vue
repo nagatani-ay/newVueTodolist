@@ -8,9 +8,11 @@
 
 <script>
 import CustomButton from '../Form/Button.vue';
+import CustomCheckbox from '../Form/CheckBox.vue';
+
 export default {
   name: 'TodoItem-Component',
-  components: { CustomButton },
+  components: { CustomButton, CustomCheckbox },
   data() {
     return {};
   },
