@@ -11,10 +11,7 @@
       <custom-button BtnText="Add" @click="CreateItem()"></custom-button>
     </div>
     <custom-select :sortList="sortList"></custom-select>
-    <radio-button
-      v-for="filterItem in filterList"
-      :filter="filterItem"
-    ></radio-button>
+    <radio-button></radio-button>
   </div>
 </template>
 
@@ -26,11 +23,11 @@ import RadioButton from '../Form/RadioButton.vue';
 
 export default {
   name: 'TodoMenu-Component',
-  components: { CustomButton, CustomTextinput, CustomSelect,CustomRadiobutton },
+  components: { CustomButton, CustomTextinput, CustomSelect, Radiobutton },
   data() {
-    return { isOpen: false , select_filter="All", tempText: '' };
+    return { isOpen: false, tempText: '' };
   },
-  props: ['todo', 'sortList','filterList'],
+  props: ['todo'],
   emits: ['create:item'],
   methods: {
     toggleMenu() {

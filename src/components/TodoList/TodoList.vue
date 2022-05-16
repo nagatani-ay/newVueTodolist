@@ -1,11 +1,7 @@
 <template>
   <div>title</div>
   <div>
-    <todo-menu
-      @create:item="$emit('create:item', $event)"
-      :sortList="sortList"
-      :filteList="filterList"
-    ></todo-menu>
+    <todo-menu @create:item="$emit('create:item', $event)"></todo-menu>
   </div>
   <div>
     <ul>
@@ -17,7 +13,6 @@
       ></todo-item>
     </ul>
   </div>
-  <button @click="test">list</button>
 </template>
 
 <script>
@@ -29,7 +24,7 @@ export default {
   data() {
     return {};
   },
-  props: ['filteredTodoList', 'sortList', 'filterList'],
+  props: ['filteredTodoList'],
   emits: ['update:item', 'delete:item', 'create:item'],
   methods: {},
 };

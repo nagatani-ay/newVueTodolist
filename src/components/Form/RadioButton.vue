@@ -1,12 +1,5 @@
 <template>
-  <input
-    type="radio"
-    :id="filter"
-    :value="filter"
-    name="group"
-    :checked="modelValue == filter"
-    @input="$emit('update:modelValue', $event.target.value)"
-  />
+  <input type="radio" />
 </template>
 
 <script>
