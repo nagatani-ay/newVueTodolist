@@ -18,4 +18,9 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+input {
+  padding: 0;
+  margin: 0;
+}
+</style>

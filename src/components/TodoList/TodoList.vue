@@ -1,11 +1,19 @@
 <template>
   <div>title</div>
   <div>
+    <todo-menu
+      @create:item="$emit('create:item', $event)"
+      :sortList="sortList"
+      :filteList="filterList"
+    ></todo-menu>
+  </div>
+  <div>
     <ul>
       <todo-item
-        v-for="todo in list"
+        v-for="todo in filteredTodoList"
         :todo="todo"
-        @delete:item="onDelete"
+        @delete:item="$emit('delete:item', todo.index)"
+        @update:item="$emit('update:item', todo.index, $event)"
       ></todo-item>
     </ul>
   </div>
@@ -14,32 +22,23 @@
 
 <script>
 import TodoItem from './TodoItem.vue';
+import TodoMenu from './TodoMenu.vue';
 export default {
   name: 'TodoList-Component',
-  components: { TodoItem },
+  components: { TodoItem, TodoMenu },
   data() {
     return {};
   },
-  props: ['list'],
-  emits: [],
-  methods: {
-    test() {
-      console.log(this.list);
-    },
-    onDelete(index) {
-      let check = confirm('本当に削除してもよろしいですか？');
-      if (check) {
-        this.list.splice(index, 1);
-        this.list.forEach((todo, i) => {
-          todo.id = i;
-        });
-      }
-    },
-    onUpdate(index, item) {
-      this.todolist[index].text = item;
-    },
-  },
+  props: ['filteredTodoList', 'sortList', 'filterList'],
+  emits: ['update:item', 'delete:item', 'create:item'],
+  methods: {},
 };
 </script>
 
-<style></style>
+<style>
+ul {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+</style>

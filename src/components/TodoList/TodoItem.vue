@@ -4,16 +4,19 @@
     <div class="todo__edititem" v-if="isEdit">
       <custom-button
         BtnText="delete"
-        @click="$emit('delete:item', todo.index)"
+        @click="
+          $emit('delete:item');
+          onEdit();
+        "
       ></custom-button>
 
-      <custom-textinput
-        :value="todo.text"
-        v-model="this.tempText"
-      ></custom-textinput>
+      <custom-textinput v-model="tempText"></custom-textinput>
       <custom-button
         BtnText="confirm"
-        @click="$emit('update:item', todo.index, this.tempText)"
+        @click="
+          $emit('update:item', tempText);
+          onEdit();
+        "
       ></custom-button>
     </div>
     <div class="todo__item" v-if="!isEdit">
@@ -33,7 +36,7 @@ export default {
   name: 'TodoItem-Component',
   components: { CustomButton, CustomCheckbox, CustomTextinput },
   data() {
-    return { isEdit: false, EditBtnText: 'edit', tempText: '' };
+    return { isEdit: false, EditBtnText: 'edit', tempText: this.todo.text };
   },
   props: ['todo'],
   emits: ['update:item', 'delete:item'],
@@ -55,7 +58,6 @@ li,
 .todo__item,
 .todo__edititem {
   display: flex;
-  justify-content: space-around;
   align-items: center;
 }
 </style>

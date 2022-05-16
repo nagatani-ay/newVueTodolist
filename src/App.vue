@@ -1,13 +1,18 @@
 <template>
   <div id="container">
-    <div class="sidemenu">
+    <div class="sideMenu">
       <side-menu @showContent="showContent = $event"></side-menu>
     </div>
 
-    <div>
+    <div class="mainContent">
       <todo-list
         v-if="showContent == 'todolist'"
-        :list="filteredlist"
+        :filteredTodoList="filteredTodoList"
+        :sortList="sorts"
+        :filteList="filters"
+        @delete:item="onDelete"
+        @update:item="onUpdate"
+        @create:item="onCreate"
       ></todo-list>
     </div>
   </div>
@@ -32,6 +37,8 @@ export default {
         { index: 2, text: 'test3', status: true, time: 'none' },
         { index: 3, text: 'test4', status: false, time: 'none' },
       ],
+      sorts: ['Text', 'Status'],
+      filters: ['All', 'Completed', 'inCompleted'],
       showContent: 'todolist',
     };
   },
@@ -39,11 +46,35 @@ export default {
     test(e) {
       console.log(e);
     },
+    onDelete(num) {
+      let check = confirm('本当に削除してもよろしいですか？');
+      if (check) {
+        this.todoList.splice(num, 1);
+        this.todoList.forEach((todo, i) => {
+          todo.index = i;
+        });
+      }
+    },
+    onUpdate(num, data) {
+      console.log(num);
+      console.log(data);
+      this.todoList[num].text = data;
+    },
+
+    onCreate(data) {
+      console.log(data);
+      this.todoList.push({
+        index: this.todoList.length,
+        text: data,
+        status: false,
+        time: 'ima',
+      });
+    },
   },
   computed: {
-    filteredlist() {
-      const filter_list = this.todoList;
-      return filter_list;
+    filteredTodoList() {
+      const filtered_todolist = this.todoList;
+      return filtered_todolist;
     },
   },
 };
@@ -53,14 +84,23 @@ export default {
 ul,
 li {
   list-style: none;
+}
+
+ul,
+li,
+p {
   padding: 0;
   margin: 0;
 }
+
 #container {
   display: flex;
 }
-.sidemenu {
+.sideMenu {
   display: block;
   width: 15%;
+}
+.mainContent {
+  width: 85%;
 }
 </style>
