@@ -13,6 +13,8 @@
         @update:item="onUpdate"
         @create:item="onCreate"
         @update:filter="filter_select = $event"
+        @update:status="onCheck"
+        @clear:item="onClear"
       ></todo-list>
     </div>
   </div>
@@ -31,10 +33,13 @@ export default {
   data() {
     return {
       todoList: [
-        { index: 0, text: 'test1', status: false, time: 'none' },
-        { index: 1, text: 'test2', status: false, time: 'none' },
-        { index: 2, text: 'test3', status: true, time: 'none' },
-        { index: 3, text: 'test4', status: false, time: 'none' },
+        // {
+        //   index: 0,
+        //   text: 'test4',
+        //   status: false,
+        //   time: 'none',
+        //   deadline: 'test',
+        // },
       ],
       showContent: 'TodoList',
 
@@ -60,14 +65,30 @@ export default {
       this.todoList[num].text = data;
     },
 
-    onCreate(data) {
-      console.log(data);
+    onCreate(args) {
       this.todoList.push({
         index: this.todoList.length,
-        text: data,
+        text: args.text,
         status: false,
         time: this.getTime(),
+        deadline: args.deadline,
       });
+    },
+
+    onCheck(index) {
+      this.todoList[index].status = !this.todoList[index].status;
+      if (this.todoList[index].status == true) {
+        this.todoList[index].time = '完了:' + this.getTime();
+      } else {
+        this.todoList[index].time = this.getTime();
+      }
+    },
+    onClear() {
+      let check = confirm('本当に削除してもよろしいですか？');
+      if (check) {
+        this.todoList = [];
+        localStorage.removeItem('todolist');
+      }
     },
 
     getTime() {
@@ -102,8 +123,9 @@ export default {
             filtered_list.push({
               index: i,
               text: todo.text,
-              status: todo.stat,
+              status: todo.status,
               time: todo.time,
+              deadline: todo.deadline,
             });
           });
         } else if (this.filter_select == '済') {
@@ -112,8 +134,9 @@ export default {
               filtered_list.push({
                 index: i,
                 text: todo.text,
-                status: todo.stat,
+                status: todo.status,
                 time: todo.time,
+                deadline: todo.deadline,
               });
             }
           });
@@ -123,14 +146,30 @@ export default {
               filtered_list.push({
                 index: i,
                 text: todo.text,
-                status: todo.stat,
+                status: todo.status,
                 time: todo.time,
+                deadline: todo.deadline,
               });
             }
           });
         }
         return filtered_list;
       },
+    },
+  },
+  mounted() {
+    if (localStorage.getItem('todolist') != null) {
+      this.todoList = JSON.parse(localStorage.getItem('todolist'));
+    }
+  },
+  // 変更の監視
+  watch: {
+    // 監視対象
+    todoList: {
+      handler() {
+        localStorage.setItem('todolist', JSON.stringify(this.todoList));
+      },
+      deep: true,
     },
   },
 };

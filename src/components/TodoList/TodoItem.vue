@@ -1,4 +1,5 @@
 <template>
+  
   <li>
     <custom-button :BtnText="EditBtnText" @click="onEdit()"></custom-button>
     <div class="todo__edititem" v-if="isEdit">
@@ -20,9 +21,14 @@
       ></custom-button>
     </div>
     <div class="todo__item" v-if="!isEdit">
-      <custom-checkbox v-model="todo.status"></custom-checkbox>
+      <custom-checkbox
+        v-model="todo.status"
+        :modelValue="todo.status"
+        @update:modelValue="$emit('update:status')"
+      ></custom-checkbox>
       <p class="item__text">{{ todo.text }}</p>
       <p class="item__time">{{ todo.time }}</p>
+      <p class="item__deadline">{{ todo.deadline }}</p>
     </div>
   </li>
 </template>
@@ -39,7 +45,7 @@ export default {
     return { isEdit: false, EditBtnText: 'edit', tempText: this.todo.text };
   },
   props: ['todo'],
-  emits: ['update:item', 'delete:item'],
+  emits: ['update:item', 'delete:item', 'update:status'],
   methods: {
     onEdit() {
       this.isEdit = !this.isEdit;
@@ -59,5 +65,11 @@ li,
 .todo__edititem {
   display: flex;
   align-items: center;
+}
+
+.item__time {
+  font-size: 0.6em;
+  color: lightgrey;
+  text-align: right;
 }
 </style>

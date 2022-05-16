@@ -8,9 +8,18 @@
         @click="toggleMenu()"
       ></custom-button>
       <div v-if="isOpen">
-        <custom-button BtnText="cancel" @click="toggleMenu()"></custom-button>
-        <custom-textinput v-model="tempText"></custom-textinput>
-        <custom-button BtnText="Add" @click="CreateItem()"></custom-button>
+        <label
+          >Todo:
+          <custom-textinput v-model="tempText"></custom-textinput>
+        </label>
+        <label
+          >完了予定:
+          <input type="date" v-model="deadline" />
+        </label>
+        <div class="addMenuControl">
+          <custom-button BtnText="cancel" @click="toggleMenu()"></custom-button>
+          <custom-button BtnText="Add" @click="CreateItem()"></custom-button>
+        </div>
       </div>
     </div>
     <div class="todo__menu__item">
@@ -28,6 +37,7 @@
         ></radio-button>
       </label>
     </div>
+    <custom-button BtnText="clear" @click="$emit('clear:item')"></custom-button>
   </div>
 </template>
 
@@ -44,10 +54,10 @@ export default {
   name: 'TodoMenu-Component',
   components: { CustomButton, CustomTextinput, CustomSelect, RadioButton },
   data() {
-    return { isOpen: false, tempText: '', selectSort: '全' };
+    return { isOpen: false, tempText: '', deadline: '', selectSort: '全' };
   },
   props: ['todo'],
-  emits: ['create:item', 'update:filter'],
+  emits: ['create:item', 'update:filter', 'clear:item'],
   methods: {
     toggleMenu() {
       this.isOpen = !this.isOpen;
@@ -56,7 +66,10 @@ export default {
       if (this.tempText == '') {
         alert('文字を入力してください');
       } else {
-        this.$emit('create:item', this.tempText);
+        this.$emit('create:item', {
+          text: this.tempText,
+          deadline: this.deadline,
+        });
         this.toggleMenu();
       }
     },

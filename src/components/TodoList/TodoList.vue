@@ -3,6 +3,7 @@
     <todo-menu
       @create:item="$emit('create:item', $event)"
       @update:filter="$emit('update:filter', $event)"
+      @clear:item="$emit('clear:item', $event)"
     ></todo-menu>
   </div>
   <div>
@@ -12,6 +13,7 @@
         :todo="todo"
         @delete:item="$emit('delete:item', todo.index)"
         @update:item="$emit('update:item', todo.index, $event)"
+        @update:status="$emit('update:status', todo.index)"
       ></todo-item>
     </ul>
   </div>
@@ -27,7 +29,14 @@ export default {
     return {};
   },
   props: ['filteredTodoList'],
-  emits: ['update:item', 'delete:item', 'create:item', 'update:filter'],
+  emits: [
+    'update:item',
+    'delete:item',
+    'create:item',
+    'update:filter',
+    'update:status',
+    'clear:item',
+  ],
   methods: {},
 };
 </script>
