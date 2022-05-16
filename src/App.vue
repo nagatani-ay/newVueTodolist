@@ -63,14 +63,39 @@ export default {
         index: this.todoList.length,
         text: data,
         status: false,
-        time: 'ima',
+        time: this.getTime(),
       });
+    },
+
+    getTime() {
+      let today = new Date();
+      let year = today.getFullYear();
+      let month = today.getMonth() + 1;
+      let day = today.getDate();
+      let hour = today.getHours();
+      let minute = today.getMinutes();
+      let second = today.getSeconds();
+      return (
+        year +
+        '/' +
+        month +
+        '/' +
+        day +
+        '/' +
+        hour +
+        ':' +
+        minute +
+        ':' +
+        second
+      );
     },
   },
   computed: {
-    filteredTodoList() {
-      const list = this.todoList;
-      return list;
+    filteredTodoList: {
+      get() {
+        const list = this.todoList;
+        return list;
+      },
     },
   },
 };

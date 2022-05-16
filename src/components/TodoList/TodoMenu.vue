@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="todo__menu">
     <custom-button
       BtnText="add"
       v-if="!isOpen"
@@ -10,13 +10,20 @@
       <custom-textinput v-model="tempText"></custom-textinput>
       <custom-button BtnText="Add" @click="CreateItem()"></custom-button>
     </div>
-    <custom-select :sortList="sortList"></custom-select>
-    <radio-button
-      v-for="filterItem in filterList"
-      :filter="filterItem"
-      group="FilterMenu"
-      v-model="selectSort"
-    ></radio-button>
+    <div class="todo__menu__item">
+      <custom-select :sortList="sortList"></custom-select>
+    </div>
+    <div class="todo__menu__item">
+      <label
+        >Filter:
+        <radio-button
+          v-for="filterItem in filterList"
+          :filter="filterItem"
+          group="FilterMenu"
+          v-model="selectSort"
+        ></radio-button>
+      </label>
+    </div>
   </div>
 </template>
 
@@ -27,13 +34,13 @@ import CustomSelect from '../Form/SortSelector.vue';
 import RadioButton from '../Form/RadioButton.vue';
 
 const sortType = ['Text', 'Status'];
-const filterType = ['All', 'Completed', 'inCompleted'];
+const filterType = ['全', '完', '未'];
 
 export default {
   name: 'TodoMenu-Component',
   components: { CustomButton, CustomTextinput, CustomSelect, RadioButton },
   data() {
-    return { isOpen: false, tempText: '', selectSort: 'All' };
+    return { isOpen: false, tempText: '', selectSort: '全' };
   },
   props: ['todo'],
   emits: ['create:item'],
@@ -65,4 +72,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.todo__menu {
+  display: flex;
+}
+</style>
