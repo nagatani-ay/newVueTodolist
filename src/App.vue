@@ -32,24 +32,46 @@ export default {
   data() {
     return {
       todoList: [
-        // {
-        //   index: 0,
-        //   text: 'test4',
-        //   status: false,
-        //   time: 'none',
-        //   deadline: 'test',
-        // },
+        {
+          index: 0,
+          text: 'test1',
+          status: false,
+          time: 'none',
+          deadline: 'test',
+        },
+        {
+          index: 1,
+          text: 'test2',
+          status: false,
+          time: 'none',
+          deadline: 'test',
+        },
+        {
+          index: 2,
+          text: 'test3',
+          status: false,
+          time: 'none',
+          deadline: 'test',
+        },
+        {
+          index: 3,
+          text: 'test4',
+          status: false,
+          time: 'none',
+          deadline: 'test',
+        },
       ],
       showContent: 'TodoList',
     };
   },
   methods: {
-    onCheck(index) {
-      this.todoList[index].status = !this.todoList[index].status;
-      if (this.todoList[index].status == true) {
-        this.todoList[index].time = '完了:' + this.getTime();
+    onCheck(data) {
+      this.todoList[data].status = !this.todoList[data].status;
+      if (this.todoList[data].status == true) {
+        this.todoList[data].time = '完了:' + this.getTime();
       } else {
-        this.todoList[index].time = this.getTime();
+        this.todoList[data].time = this.getTime();
+        console.log('test');
       }
     },
     onClear() {
@@ -59,13 +81,13 @@ export default {
         localStorage.removeItem('todolist');
       }
     },
-    onCreate(args) {
+    onCreate(data) {
       this.todoList.push({
         index: this.todoList.length,
-        text: args.text,
+        text: data.text,
         status: false,
         time: this.getTime(),
-        deadline: args.deadline,
+        deadline: data.deadline,
       });
     },
 
@@ -109,8 +131,9 @@ export default {
   },
   computed: {},
   mounted() {
-    if (localStorage.getItem('todolist') != null) {
-      this.todoList = JSON.parse(localStorage.getItem('todolist'));
+    if (localStorage.getItem('todolist') != '') {
+      // this.todoList = JSON.parse(localStorage.getItem('todolist'));
+    } else {
     }
   },
   // 変更の監視

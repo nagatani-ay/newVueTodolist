@@ -46,40 +46,26 @@ export default {
         if (this.filterType == '全') {
           filtered_list = this.todoList.map((x) => x);
         } else if (this.filterType == '済') {
-          this.todoList.forEach((todo, i) => {
-            if (todo.status == true) {
-              filtered_list.push({
-                index: i,
-                text: todo.text,
-                status: todo.status,
-                time: todo.time,
-                deadline: todo.deadline,
-              });
-            }
-          });
+          filtered_list = this.todoList
+            .map((x) => x)
+            .filter((x) => x.status == true);
         } else if (this.filterType == '未') {
-          this.todoList.forEach((todo, i) => {
-            if (todo.status == false) {
-              filtered_list.push({
-                index: i,
-                text: todo.text,
-                status: todo.status,
-                time: todo.time,
-                deadline: todo.deadline,
-              });
-            }
-          });
+          filtered_list = this.todoList
+            .map((x) => x)
+            .filter((x) => x.status == false);
         }
         return filtered_list;
-      },
-      set(list) {
-        const filtered_list = todoList.map((x) => x);
       },
     },
     // ソート
     sortedList: {
       get() {
-        let sorted_list = [];
+        let sorted_list;
+
+        if (this.sortType == '') {
+        } else {
+          sorted_list = [];
+        }
         // テキスト順
         if (this.sortType == 'Text') {
           sorted_list = this.filteredList
@@ -92,11 +78,24 @@ export default {
             });
           // 完了順
         } else if (this.sortType == 'Status') {
-          const truelist = this.filteredList
-            .map((x) => x)
-            .filter((x) => (x.status = 'true'));
+          let truelist = this.filteredList
+            .filter((x) => x.status == true)
+            .sort((a, b) => {
+              if (a.text === b.text) {
+                return a.deadline < b.deadline ? -1 : 1;
+              }
+              return a.text < b.text ? -1 : 1;
+            });
+          let falselist = this.filteredList
+            .filter((x) => x.status == false)
+            .sort((a, b) => {
+              if (a.text === b.text) {
+                return a.deadline < b.deadline ? -1 : 1;
+              }
+              return a.text < b.text ? -1 : 1;
+            });
 
-          console.log(truelist);
+          sorted_list = truelist.concat(falselist);
           // 最終更新時間
         } else if (this.sortType == 'Time') {
           sorted_list = this.filteredList
@@ -118,6 +117,7 @@ export default {
               return a.deadline < b.deadline ? -1 : 1;
             });
         }
+        this.sortType = '';
         return sorted_list;
       },
     },

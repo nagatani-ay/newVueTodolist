@@ -25,8 +25,11 @@
     <div class="todo__menu__item">
       <custom-select
         :sortList="sortList"
-        v-model="selectSort"
-        @update:modelValue="$emit('sort:item', selectSort)"
+        :modelValue="selectSort"
+        @update:modelValue="
+          selectSort = $event;
+          $emit('sort:item', selectSort);
+        "
       ></custom-select>
     </div>
     <div class="todo__menu__item">

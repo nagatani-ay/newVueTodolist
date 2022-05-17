@@ -25,7 +25,6 @@
     </div>
     <div class="todo__item" v-if="!isEdit">
       <custom-checkbox
-        v-model="todo.status"
         :modelValue="todo.status"
         @update:modelValue="$emit('update:status')"
       ></custom-checkbox>
