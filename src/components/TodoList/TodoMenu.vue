@@ -18,12 +18,16 @@
         </label>
         <div class="addMenuControl">
           <custom-button BtnText="cancel" @click="toggleMenu()"></custom-button>
-          <custom-button BtnText="Add" @click="CreateItem()"></custom-button>
+          <custom-button BtnText="Add" @click="createEvent()"></custom-button>
         </div>
       </div>
     </div>
     <div class="todo__menu__item">
-      <custom-select :sortList="sortList"></custom-select>
+      <custom-select
+        :sortList="sortList"
+        v-model="selectSort"
+        @update:modelValue="$emit('sort:item', selectSort)"
+      ></custom-select>
     </div>
     <div class="todo__menu__item">
       <label
@@ -32,8 +36,8 @@
           v-for="filterItem in filterList"
           :filter="filterItem"
           group="FilterMenu"
-          v-model="selectSort"
-          @update:modelValue="$emit('update:filter', selectSort)"
+          v-model="selectFilter"
+          @update:modelValue="$emit('update:filter', selectFilter)"
         ></radio-button>
       </label>
     </div>
@@ -47,26 +51,32 @@ import CustomTextinput from '../Form/TextInput.vue';
 import CustomSelect from '../Form/SortSelector.vue';
 import RadioButton from '../Form/RadioButton.vue';
 
-const sortType = ['Text', 'Status', 'Deadline'];
-const filterType = ['全', '完', '未'];
+const sortType = ['Text', 'Status', 'Time', 'Deadline'];
+const filterType = ['全', '済', '未'];
 
 export default {
   name: 'TodoMenu-Component',
   components: { CustomButton, CustomTextinput, CustomSelect, RadioButton },
   data() {
-    return { isOpen: false, tempText: '', deadline: '', selectSort: '全' };
+    return {
+      isOpen: false,
+      tempText: '',
+      deadline: '',
+      selectFilter: '全',
+      selectSort: '',
+    };
   },
   props: ['todo'],
-  emits: ['create:item', 'update:filter', 'clear:item'],
+  emits: ['create:item', 'update:filter', 'clear:item', 'sort:item'],
   methods: {
     toggleMenu() {
       this.isOpen = !this.isOpen;
       this.tempText = '';
       this.deadline = '';
     },
-    CreateItem() {
+    createEvent() {
       if (this.tempText == '') {
-        alert('文字を入力してください');
+        alert('内容を入力してください');
       } else {
         this.$emit('create:item', {
           text: this.tempText,

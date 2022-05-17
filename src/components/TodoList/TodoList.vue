@@ -2,14 +2,15 @@
   <div>
     <todo-menu
       @create:item="$emit('create:item', $event)"
-      @update:filter="$emit('update:filter', $event)"
       @clear:item="$emit('clear:item', $event)"
+      @update:filter="filterType = $event"
+      @sort:item="sortType = $event"
     ></todo-menu>
   </div>
   <div>
     <ul>
       <todo-item
-        v-for="todo in filteredTodoList"
+        v-for="todo in sortedList"
         :todo="todo"
         @delete:item="$emit('delete:item', todo.index)"
         @update:item="$emit('update:item', todo.index, $event)"
@@ -26,18 +27,107 @@ export default {
   name: 'TodoList-Component',
   components: { TodoItem, TodoMenu },
   data() {
-    return {};
+    return { sortType: 'Text', filterType: '' };
   },
-  props: ['filteredTodoList'],
+  props: ['todoList'],
   emits: [
     'update:item',
     'delete:item',
     'create:item',
-    'update:filter',
     'update:status',
     'clear:item',
   ],
   methods: {},
+  computed: {
+    // フィルター
+    filteredList: {
+      get() {
+        const filtered_list = [];
+        if (this.filterType == '全') {
+          todoList.forEach((todo, i) => {
+            filtered_list.push({
+              index: i,
+              text: todo.text,
+              status: todo.status,
+              time: todo.time,
+              deadline: todo.deadline,
+            });
+          });
+        } else if (this.filterType == '済') {
+          todoList.forEach((todo, i) => {
+            if (todo.status == true) {
+              filtered_list.push({
+                index: i,
+                text: todo.text,
+                status: todo.status,
+                time: todo.time,
+                deadline: todo.deadline,
+              });
+            }
+          });
+        } else if (this.filterType == '未') {
+          todoList.forEach((todo, i) => {
+            if (todo.status == false) {
+              filtered_list.push({
+                index: i,
+                text: todo.text,
+                status: todo.status,
+                time: todo.time,
+                deadline: todo.deadline,
+              });
+            }
+          });
+        }
+        return filtered_list;
+      },
+      // ソート
+      sortedList: {
+        get() {
+          console.log(this.sortType);
+          let sorted_list = [];
+          // テキスト順
+          if (this.sortType == 'Text') {
+            sorted_list = filteredList
+              .map((x) => x)
+              .sort((a, b) => {
+                if (a.text === b.text) {
+                  return a.deadline < b.deadline ? -1 : 1;
+                }
+                return a.text < b.text ? -1 : 1;
+              });
+            return sorted_list;
+            // 完了順
+          } else if (this.sortType == 'Status') {
+            const truelist = filteredList
+              .map((x) => x)
+              .filter((x) => x.status === 'true');
+
+            console.log(truelist);
+            // 最終更新時間
+          } else if (this.sortType == 'Time') {
+            sorted_list = filteredList
+              .map((x) => x)
+              .sort((a, b) => {
+                if (a.time === b.time) {
+                  return a.text < b.text ? -1 : 1;
+                }
+                return a.time < b.time ? -1 : 1;
+              });
+            // 締切順
+          } else if (this.sortType == 'Deadline') {
+            sorted_list = filteredList
+              .map((x) => x)
+              .sort((a, b) => {
+                if (a.deadline === b.deadline) {
+                  return a.text < b.text ? -1 : 1;
+                }
+                return a.deadline < b.deadline ? -1 : 1;
+              });
+          }
+        },
+      },
+    },
+  },
 };
 </script>
 

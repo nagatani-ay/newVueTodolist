@@ -11,10 +11,14 @@
       ></custom-button>
 
       <custom-textinput v-model="tempText"></custom-textinput>
+      <input type="date" v-model="tempDeadline" />
       <custom-button
         BtnText="confirm"
         @click="
-          $emit('update:item', tempText);
+          $emit('update:item', {
+            text: tempText,
+            deadline: tempDeadline,
+          });
           onEdit();
         "
       ></custom-button>
@@ -27,6 +31,7 @@
       ></custom-checkbox>
       <p class="item__text">{{ todo.text }}</p>
       <p class="item__time">{{ todo.time }}</p>
+      <p class="item__dead">{{ todo.deadline }}</p>
     </div>
   </li>
 </template>
@@ -40,7 +45,12 @@ export default {
   name: 'TodoItem-Component',
   components: { CustomButton, CustomCheckbox, CustomTextinput },
   data() {
-    return { isEdit: false, EditBtnText: 'edit', tempText: this.todo.text };
+    return {
+      isEdit: false,
+      EditBtnText: 'edit',
+      tempText: this.todo.text,
+      tempDeadline: this.todo.deadline,
+    };
   },
   props: ['todo'],
   emits: ['update:item', 'delete:item', 'update:status'],

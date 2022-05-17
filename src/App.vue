@@ -8,11 +8,10 @@
       <h1>{{ showContent }}</h1>
       <todo-list
         v-if="showContent == 'TodoList'"
-        :filteredTodoList="filteredTodoList"
+        :todoList="todoList"
         @delete:item="onDelete"
         @update:item="onUpdate"
         @create:item="onCreate"
-        @update:filter="filter_select = $event"
         @update:status="onCheck"
         @clear:item="onClear"
       ></todo-list>
@@ -42,39 +41,9 @@ export default {
         // },
       ],
       showContent: 'TodoList',
-
-      filter_select: '全',
     };
   },
   methods: {
-    test(e) {
-      console.log(e);
-    },
-    onDelete(num) {
-      let check = confirm('本当に削除してもよろしいですか？');
-      if (check) {
-        this.todoList.splice(num, 1);
-        this.todoList.forEach((todo, i) => {
-          todo.index = i;
-        });
-      }
-    },
-    onUpdate(num, data) {
-      console.log(num);
-      console.log(data);
-      this.todoList[num].text = data;
-    },
-
-    onCreate(args) {
-      this.todoList.push({
-        index: this.todoList.length,
-        text: args.text,
-        status: false,
-        time: this.getTime(),
-        deadline: args.deadline,
-      });
-    },
-
     onCheck(index) {
       this.todoList[index].status = !this.todoList[index].status;
       if (this.todoList[index].status == true) {
@@ -89,6 +58,30 @@ export default {
         this.todoList = [];
         localStorage.removeItem('todolist');
       }
+    },
+    onCreate(args) {
+      this.todoList.push({
+        index: this.todoList.length,
+        text: args.text,
+        status: false,
+        time: this.getTime(),
+        deadline: args.deadline,
+      });
+    },
+
+    onDelete(num) {
+      let check = confirm('本当に削除してもよろしいですか？');
+      if (check) {
+        this.todoList.splice(num, 1);
+        this.todoList.forEach((todo, i) => {
+          todo.index = i;
+        });
+      }
+    },
+
+    onUpdate(num, data) {
+      this.todoList[num].text = data.text;
+      this.todoList[num].deadline = data.deadline;
     },
 
     getTime() {
@@ -114,49 +107,7 @@ export default {
       );
     },
   },
-  computed: {
-    filteredTodoList: {
-      get() {
-        const filtered_list = [];
-        if (this.filter_select == '全') {
-          this.todoList.forEach((todo, i) => {
-            filtered_list.push({
-              index: i,
-              text: todo.text,
-              status: todo.status,
-              time: todo.time,
-              deadline: todo.deadline,
-            });
-          });
-        } else if (this.filter_select == '済') {
-          this.todoList.forEach((todo, i) => {
-            if (todo.status == true) {
-              filtered_list.push({
-                index: i,
-                text: todo.text,
-                status: todo.status,
-                time: todo.time,
-                deadline: todo.deadline,
-              });
-            }
-          });
-        } else if (this.filter_select == '未') {
-          this.todoList.forEach((todo, i) => {
-            if (todo.status == false) {
-              filtered_list.push({
-                index: i,
-                text: todo.text,
-                status: todo.status,
-                time: todo.time,
-                deadline: todo.deadline,
-              });
-            }
-          });
-        }
-        return filtered_list;
-      },
-    },
-  },
+  computed: {},
   mounted() {
     if (localStorage.getItem('todolist') != null) {
       this.todoList = JSON.parse(localStorage.getItem('todolist'));
