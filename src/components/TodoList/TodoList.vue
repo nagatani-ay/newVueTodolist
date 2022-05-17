@@ -27,7 +27,7 @@ export default {
   name: 'TodoList-Component',
   components: { TodoItem, TodoMenu },
   data() {
-    return { sortType: 'Text', filterType: '' };
+    return { sortType: 'Text', filterType: '全' };
   },
   props: ['todoList'],
   emits: [
@@ -42,19 +42,11 @@ export default {
     // フィルター
     filteredList: {
       get() {
-        const filtered_list = [];
+        let filtered_list = [];
         if (this.filterType == '全') {
-          todoList.forEach((todo, i) => {
-            filtered_list.push({
-              index: i,
-              text: todo.text,
-              status: todo.status,
-              time: todo.time,
-              deadline: todo.deadline,
-            });
-          });
+          filtered_list = this.todoList.map((x) => x);
         } else if (this.filterType == '済') {
-          todoList.forEach((todo, i) => {
+          this.todoList.forEach((todo, i) => {
             if (todo.status == true) {
               filtered_list.push({
                 index: i,
@@ -66,7 +58,7 @@ export default {
             }
           });
         } else if (this.filterType == '未') {
-          todoList.forEach((todo, i) => {
+          this.todoList.forEach((todo, i) => {
             if (todo.status == false) {
               filtered_list.push({
                 index: i,
@@ -80,51 +72,53 @@ export default {
         }
         return filtered_list;
       },
-      // ソート
-      sortedList: {
-        get() {
-          console.log(this.sortType);
-          let sorted_list = [];
-          // テキスト順
-          if (this.sortType == 'Text') {
-            sorted_list = filteredList
-              .map((x) => x)
-              .sort((a, b) => {
-                if (a.text === b.text) {
-                  return a.deadline < b.deadline ? -1 : 1;
-                }
-                return a.text < b.text ? -1 : 1;
-              });
-            return sorted_list;
-            // 完了順
-          } else if (this.sortType == 'Status') {
-            const truelist = filteredList
-              .map((x) => x)
-              .filter((x) => x.status === 'true');
-
-            console.log(truelist);
-            // 最終更新時間
-          } else if (this.sortType == 'Time') {
-            sorted_list = filteredList
-              .map((x) => x)
-              .sort((a, b) => {
-                if (a.time === b.time) {
-                  return a.text < b.text ? -1 : 1;
-                }
-                return a.time < b.time ? -1 : 1;
-              });
-            // 締切順
-          } else if (this.sortType == 'Deadline') {
-            sorted_list = filteredList
-              .map((x) => x)
-              .sort((a, b) => {
-                if (a.deadline === b.deadline) {
-                  return a.text < b.text ? -1 : 1;
-                }
+      set(list) {
+        const filtered_list = todoList.map((x) => x);
+      },
+    },
+    // ソート
+    sortedList: {
+      get() {
+        let sorted_list = [];
+        // テキスト順
+        if (this.sortType == 'Text') {
+          sorted_list = this.filteredList
+            .map((x) => x)
+            .sort((a, b) => {
+              if (a.text === b.text) {
                 return a.deadline < b.deadline ? -1 : 1;
-              });
-          }
-        },
+              }
+              return a.text < b.text ? -1 : 1;
+            });
+          // 完了順
+        } else if (this.sortType == 'Status') {
+          const truelist = this.filteredList
+            .map((x) => x)
+            .filter((x) => (x.status = 'true'));
+
+          console.log(truelist);
+          // 最終更新時間
+        } else if (this.sortType == 'Time') {
+          sorted_list = this.filteredList
+            .map((x) => x)
+            .sort((a, b) => {
+              if (a.time === b.time) {
+                return a.text < b.text ? -1 : 1;
+              }
+              return a.time < b.time ? -1 : 1;
+            });
+          // 締切順
+        } else if (this.sortType == 'Deadline') {
+          sorted_list = this.filteredList
+            .map((x) => x)
+            .sort((a, b) => {
+              if (a.deadline === b.deadline) {
+                return a.text < b.text ? -1 : 1;
+              }
+              return a.deadline < b.deadline ? -1 : 1;
+            });
+        }
+        return sorted_list;
       },
     },
   },
