@@ -3,7 +3,7 @@
     >Sort:
     <select
       :value="modelValue"
-      @change="$emit('update:modelValue', $event.target.value)"
+      @input="$emit('update:modelValue', $event.target.value)"
     >
       <option v-for="sort in sortList">{{ sort }}</option>
     </select>
