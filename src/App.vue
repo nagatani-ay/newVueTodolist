@@ -14,6 +14,7 @@
         @create:item="onCreate"
         @update:status="onCheck"
         @clear:item="onClear"
+        @sort:item="onSort"
       ></todo-list>
     </div>
   </div>
@@ -100,7 +101,15 @@ export default {
         });
       }
     },
+    onSort(data) {
+      console.log(data);
+      data.forEach((item, i) => {
+        item.index = i;
+      });
+      this.todoList = data;
 
+      console.log(data);
+    },
     onUpdate(num, data) {
       this.todoList[num].text = data.text;
       this.todoList[num].deadline = data.deadline;
