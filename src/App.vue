@@ -30,23 +30,23 @@ export default {
     TodoList,
   },
   setup() {
-    const todoList = ref([
-      {
-        index: 0,
-        text: 'test',
-        status: false,
-        time: getTime(),
-        deadline: '2022/10/20',
-      },
-      {
-        index: 1,
-        text: 'test2',
-        status: false,
-        time: getTime(),
-        deadline: '2022/10/20',
-      },
-    ]);
+    const todoList = ref([]);
+    // {
+    //   index: 0,
+    //   text: 'test',
+    //   status: false,
+    //   time: getTime(),
+    //   deadline: '2022/10/20',
+    // },
+    // {
+    //   index: 1,
+    //   text: 'test2',
+    //   status: false,
+    //   time: getTime(),
+    //   deadline: '2022/10/20',
+    // },
 
+    console.log(todoList);
     const showContent = ref('TodoList');
 
     function onClear() {
@@ -57,7 +57,7 @@ export default {
     }
 
     function onCreate(data) {
-      console.log(todoList.value);
+      console.log(data);
 
       todoList.value.push({
         index: todoList.value.length,
