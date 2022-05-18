@@ -1,12 +1,11 @@
 <template>
-  <button @click="addItem">test</button>
   <div class="todo__menu">
     <div class="todo__addMenu">
       <custom-button
         BtnText=""
         class="addMenuButton"
         v-if="!isOpen"
-        @click="toggleMenu()"
+        @click="toggleMenu"
       ></custom-button>
       <div v-if="isOpen">
         <label
@@ -25,7 +24,7 @@
     </div>
     <div class="todo__menu__item">
       <custom-select
-        :sortList="sortList"
+        :sortList="sortTypeList"
         :modelValue="selectSort"
         @update:modelValue="
           selectSort = $event;
@@ -37,7 +36,8 @@
       <label
         >Filter:
         <radio-button
-          v-for="filterItem in filterList"
+          v-for="filterItem in filterTypeList"
+          :key="filterItem"
           :filter="filterItem"
           group="FilterMenu"
           v-model="selectFilter"
@@ -54,55 +54,52 @@ import CustomButton from '../Form/Button.vue';
 import CustomTextinput from '../Form/TextInput.vue';
 import CustomSelect from '../Form/SortSelector.vue';
 import RadioButton from '../Form/RadioButton.vue';
-import { ref } from 'vue';
-import { addItem } from '../../App.vue';
-const sortType = ['Text', 'Status', 'Time', 'Deadline'];
-const filterType = ['全', '済', '未'];
+import { ref, reactive, computed } from 'vue';
 
 export default {
   name: 'TodoMenu-Component',
   components: { CustomButton, CustomTextinput, CustomSelect, RadioButton },
-  setup(props, context) {},
-  data() {
-    return {
-      isOpen: false,
-      tempText: '',
-      deadline: '',
-      selectFilter: '全',
-      selectSort: '',
-    };
-  },
   props: ['todo'],
   emits: ['create:item', 'update:filter', 'clear:item', 'sort:item'],
-  methods: {
-    toggleMenu() {
-      this.isOpen = !this.isOpen;
-      this.tempText = '';
-      this.deadline = '';
-    },
-    createEvent() {
-      if (this.tempText == '') {
+  setup(props, context) {
+    let isOpen = ref(false);
+    let tempText = ref();
+    let deadline = ref();
+    let selectFilter = '全';
+    let selectSort = '';
+    const sortTypeList = ref(['Text', 'Status', 'Time', 'Deadline']);
+    const filterTypeList = ref(['全', '済', '未']);
+
+    function toggleMenu() {
+      isOpen.value = !isOpen.value;
+      tempText.value = undefined;
+      tempText.value = undefined;
+    }
+
+    function createEvent() {
+      if (tempText.value == '') {
         alert('内容を入力してください');
       } else {
-        this.$emit('create:item', {
-          text: this.tempText,
-          deadline: this.deadline,
+        context.emit('create:item', {
+          text: tempText.value,
+          deadline: deadline.value,
         });
-        this.toggleMenu();
+        toggleMenu();
       }
-    },
-  },
-  computed: {
-    filterList: {
-      get() {
-        return filterType;
-      },
-    },
-    sortList: {
-      get() {
-        return sortType;
-      },
-    },
+    }
+
+    return {
+      sortTypeList,
+      isOpen,
+      tempText,
+      deadline,
+      selectFilter,
+      selectSort,
+      createEvent,
+      toggleMenu,
+      sortTypeList,
+      filterTypeList,
+    };
   },
 };
 </script>

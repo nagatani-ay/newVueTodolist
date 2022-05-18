@@ -10,7 +10,7 @@
         v-if="showContent == 'TodoList'"
         :todoList="todoList"
         @delete:item="onDelete"
-        @update:item="onUpdate"
+        @update:item="onEdit"
         @create:item="onCreate"
         @update:status="onCheck"
         @clear:item="onClear"
@@ -30,7 +30,22 @@ export default {
     TodoList,
   },
   setup() {
-    const todoList = ref([]);
+    const todoList = ref([
+      {
+        index: 0,
+        text: 'test',
+        status: false,
+        time: getTime(),
+        deadline: '2022/10/20',
+      },
+      {
+        index: 1,
+        text: 'test2',
+        status: false,
+        time: getTime(),
+        deadline: '2022/10/20',
+      },
+    ]);
 
     const showContent = ref('TodoList');
 
@@ -42,6 +57,8 @@ export default {
     }
 
     function onCreate(data) {
+      console.log(todoList.value);
+
       todoList.value.push({
         index: todoList.value.length,
         text: data.text,
@@ -80,7 +97,8 @@ export default {
       }
     }
 
-    function onUpdate(num, data) {
+    function onEdit(num, data) {
+      console.log('edit');
       todoList.value[num].text = data.text;
       todoList.value[num].deadline = data.deadline;
     }
@@ -94,7 +112,9 @@ export default {
     watch(
       () => todoList.value,
       (list) => {
-        localStorage.setItem('todolist', JSON.stringify(list));
+        if (todoList != null) {
+          localStorage.setItem('todolist', JSON.stringify(list));
+        }
       },
       { deep: true }
     );
@@ -106,7 +126,7 @@ export default {
       getTime,
       onClear,
       onDelete,
-      onUpdate,
+      onEdit,
     };
   },
 };

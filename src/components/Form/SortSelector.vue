@@ -13,11 +13,6 @@
 <script>
 export default {
   name: 'SelectBox-Component',
-  components: {},
-  data() {
-    return {};
-  },
-  computed: {},
   props: ['modelValue', 'sortList'],
   emits: ['update:modelValue'],
 };

@@ -9,10 +9,6 @@
 <script>
 export default {
   name: 'CheckBox-Component',
-  components: {},
-  data() {
-    return {};
-  },
   props: ['modelValue'],
   emits: ['update:modelValue'],
 };

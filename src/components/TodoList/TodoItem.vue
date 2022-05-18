@@ -1,27 +1,18 @@
 <template>
   <li>
-    <custom-button :BtnText="EditBtnText" @click="onEdit()"></custom-button>
+    <custom-button :BtnText="EditBtnText" @click="toggleEdit"></custom-button>
     <div class="todo__edititem" v-if="isEdit">
       <custom-button
         BtnText="delete"
         @click="
           $emit('delete:item');
-          onEdit();
+          toggleEdit;
         "
       ></custom-button>
-<!-- test -->
-      <custom-textinput v-model="tempText"></custom-textinput>
-      <input type="date" v-model="tempDeadline" />
-      <custom-button
-        BtnText="confirm"
-        @click="
-          $emit('update:item', {
-            text: tempText,
-            deadline: tempDeadline,
-          });
-          onEdit();
-        "
-      ></custom-button>
+
+      <custom-textinput v-model="tempText.value"></custom-textinput>
+      <input type="date" v-model="tempDeadline.value" />
+      <custom-button BtnText="confirm" @click="confirmEdit"></custom-button>
     </div>
     <div class="todo__item" v-if="!isEdit">
       <custom-checkbox
@@ -39,29 +30,43 @@
 import CustomButton from '../Form/Button.vue';
 import CustomCheckbox from '../Form/CheckBox.vue';
 import CustomTextinput from '../Form/TextInput.vue';
-
+import { ref } from 'vue';
 export default {
   name: 'TodoItem-Component',
   components: { CustomButton, CustomCheckbox, CustomTextinput },
-  data() {
-    return {
-      isEdit: false,
-      EditBtnText: 'edit',
-      tempText: this.todo.text,
-      tempDeadline: this.todo.deadline,
-    };
-  },
+
   props: ['todo'],
   emits: ['update:item', 'delete:item', 'update:status'],
-  methods: {
-    onEdit() {
-      this.isEdit = !this.isEdit;
-      if (this.EditBtnText == 'edit') {
-        this.EditBtnText = 'cancel';
+  setup(props, context) {
+    let isEdit = ref(false);
+    let EditBtnText = ref('edit');
+    let tempText = ref(props.todo.text);
+    let tempDeadline = ref(props.todo.deadline);
+
+    function toggleEdit() {
+      isEdit.value = !isEdit.value;
+      if (EditBtnText.value == 'edit') {
+        EditBtnText.value = 'cancel';
       } else {
-        this.EditBtnText = 'edit';
+        EditBtnText.value = 'edit';
       }
-    },
+    }
+
+    function confirmEdit() {
+      toggleEdit();
+      context.emit('update:item', {
+        text: tempText.value,
+        deadline: tempDeadline.value,
+      });
+    }
+    return {
+      isEdit,
+      EditBtnText,
+      tempText,
+      tempDeadline,
+      toggleEdit,
+      confirmEdit,
+    };
   },
 };
 </script>
