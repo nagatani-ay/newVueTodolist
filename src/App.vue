@@ -22,99 +22,43 @@
 <script>
 import SideMenu from './components/SideMenu/SideMenu.vue';
 import TodoList from './components/TodoList/TodoList.vue';
-
+import { toRefs, ref, reactive } from 'vue';
 export default {
   name: 'App',
   components: {
     SideMenu,
     TodoList,
   },
-  data() {
-    return {
-      todoList: [
-        {
-          index: 0,
-          text: 'test1',
-          status: false,
-          time: 'none',
-          deadline: 'test',
-        },
-        {
-          index: 1,
-          text: 'test2',
-          status: false,
-          time: 'none',
-          deadline: 'test',
-        },
-        {
-          index: 2,
-          text: 'test3',
-          status: false,
-          time: 'none',
-          deadline: 'test',
-        },
-        {
-          index: 3,
-          text: 'test4',
-          status: false,
-          time: 'none',
-          deadline: 'test',
-        },
-      ],
-      showContent: 'TodoList',
-    };
-  },
-  methods: {
-    onCheck(data) {
-      this.todoList[data].status = !this.todoList[data].status;
-      if (this.todoList[data].status == true) {
-        this.todoList[data].time = '完了:' + this.getTime();
-      } else {
-        this.todoList[data].time = this.getTime();
-        console.log('test');
-      }
-    },
-    onClear() {
+  setup() {
+    const todoList = ref([]);
+      const onClear =()=> {
       let check = confirm('本当に削除してもよろしいですか？');
       if (check) {
-        this.todoList = [];
+        todoList.value = [];
         localStorage.removeItem('todolist');
       }
-    },
-    onCreate(data) {
-      this.todoList.push({
-        index: this.todoList.length,
+    }
+    
+    const onCreate = (data) => {
+      todoList.value.push({
+        index: todoList.value.length,
         text: data.text,
         status: false,
-        time: this.getTime(),
+        time: getTime(),
         deadline: data.deadline,
       });
-    },
+    };
 
-    onDelete(num) {
-      let check = confirm('本当に削除してもよろしいですか？');
-      if (check) {
-        this.todoList.splice(num, 1);
-        this.todoList.forEach((todo, i) => {
-          todo.index = i;
-        });
+    const onCheck=(data) => {
+      todoList.value[data].status = !todoList.value[data].status
+      if (todoList.value[data].status == true) {
+        todoList.value[data].time = '完了:' + getTime();
+      } else {
+        todoList.value[data].time = getTime();
       }
     },
-    onSort(data) {
-      console.log(data);
-      data.forEach((item, i) => {
-        item.index = i;
-      });
-      this.todoList = data;
 
-      console.log(data);
-    },
-    onUpdate(num, data) {
-      this.todoList[num].text = data.text;
-      this.todoList[num].deadline = data.deadline;
-    },
-
-    getTime() {
+const getTime =()=> {
       const today = new Date();
       const year = today.getFullYear();
       const month = today.getMonth() + 1;
@@ -136,11 +80,57 @@ export default {
         second
       );
     },
+
+
+
+
+
+
+
+
+    return {
+      todoList,
+      onCreate,
+      onCheck,
+      getTime,
+      onClear,
+    };
+  },
+  data() {
+    return {
+      showContent: 'TodoList',
+    };
+  },
+  methods: {
+
+
+
+    onDelete(num) {
+      let check = confirm('本当に削除してもよろしいですか？');
+      if (check) {
+        this.todoList.splice(num, 1);
+        this.todoList.forEach((todo, i) => {
+          todo.index = i;
+        });
+      }
+    },
+    onSort(data) {
+      data.forEach((item, i) => {
+        item.index = i;
+      });
+      this.todoList = data;
+    },
+    onUpdate(num, data) {
+      this.todoList[num].text = data.text;
+      this.todoList[num].deadline = data.deadline;
+    },
+
+
   },
   computed: {},
   mounted() {
     if (localStorage.getItem('todolist') != '') {
-      // this.todoList = JSON.parse(localStorage.getItem('todolist'));
+      this.todoList = JSON.parse(localStorage.getItem('todolist'));
     } else {
     }
   },
@@ -170,14 +160,14 @@ p {
   margin: 0;
 }
 
-button {
+/* button {
   background-color: transparent;
   border: none;
   cursor: pointer;
   outline: none;
   margin: 0 5px;
   appearance: none;
-}
+} */
 
 #container {
   display: flex;

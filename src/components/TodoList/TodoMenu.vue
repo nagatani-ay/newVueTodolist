@@ -1,4 +1,5 @@
 <template>
+  <button @click="addItem">test</button>
   <div class="todo__menu">
     <div class="todo__addMenu">
       <custom-button
@@ -53,13 +54,15 @@ import CustomButton from '../Form/Button.vue';
 import CustomTextinput from '../Form/TextInput.vue';
 import CustomSelect from '../Form/SortSelector.vue';
 import RadioButton from '../Form/RadioButton.vue';
-
+import { ref } from 'vue';
+import { addItem } from '../../App.vue';
 const sortType = ['Text', 'Status', 'Time', 'Deadline'];
 const filterType = ['全', '済', '未'];
 
 export default {
   name: 'TodoMenu-Component',
   components: { CustomButton, CustomTextinput, CustomSelect, RadioButton },
+  setup(props, context) {},
   data() {
     return {
       isOpen: false,

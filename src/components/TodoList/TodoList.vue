@@ -24,6 +24,7 @@
 <script>
 import TodoItem from './TodoItem.vue';
 import TodoMenu from './TodoMenu.vue';
+import { reactive } from 'vue';
 export default {
   name: 'TodoList-Component',
   components: { TodoItem, TodoMenu },
@@ -31,6 +32,7 @@ export default {
     return { sortType: 'Text', filterType: '全' };
   },
   props: ['todoList'],
+  setup(props) {},
   emits: [
     'update:item',
     'delete:item',
