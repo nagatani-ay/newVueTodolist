@@ -14,7 +14,6 @@
         @create:item="onCreate"
         @update:status="onCheck"
         @clear:item="onClear"
-        @sort:item="onSort"
       ></todo-list>
     </div>
   </div>
