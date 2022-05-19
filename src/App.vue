@@ -16,6 +16,9 @@
         @update:status="onCheck"
         @clear:item="onClear"
       ></todo-list>
+
+      <schedule v-if="showContent == 'Schedule'"></schedule>
+      
     </div>
   </div>
 </template>
@@ -23,6 +26,7 @@
 <script>
 import SideMenu from './components/SideMenu/SideMenu.vue';
 import TodoList from './components/TodoList/TodoList.vue';
+import Schedule from './components/Schedule/Schedule.vue';
 import { toRefs, ref, reactive, onMounted, watch } from 'vue';
 
 export default {
@@ -30,6 +34,7 @@ export default {
   components: {
     SideMenu,
     TodoList,
+    Schedule,
   },
   setup() {
     let todoData = ref([]);

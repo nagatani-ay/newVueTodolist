@@ -65,9 +65,9 @@ export default {
       console.log(sortType.value);
       console.log(sortOrder.value);
       if (sortOrder.value == 'ascend') {
-        order = 1;
-      } else {
         order = -1;
+      } else {
+        order = 1;
       }
       if (sortType.value == '') {
       } else {

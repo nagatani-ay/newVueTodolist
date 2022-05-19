@@ -23,7 +23,7 @@ export default {
     function toggleSideMenu() {
       isOpenSideMenu.value = !isOpenSideMenu.value;
     }
-    const contentList = ref(['TodoList', 'Flow']);
+    const contentList = ref(['TodoList', 'Schedule']);
     return {
       isOpenSideMenu,
       toggleSideMenu,
