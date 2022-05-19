@@ -1,4 +1,5 @@
-<template>
+<template
+
   <div id="container">
     <div class="sideMenu">
       <side-menu @showContent="showContent = $event"></side-menu>
@@ -8,7 +9,7 @@
       <h1>{{ showContent }}</h1>
       <todo-list
         v-if="showContent == 'TodoList'"
-        :todoList="todoList"
+        :todoList="todoData"
         @delete:item="onDelete"
         @update:item="onEdit"
         @create:item="onCreate"
@@ -23,6 +24,7 @@
 import SideMenu from './components/SideMenu/SideMenu.vue';
 import TodoList from './components/TodoList/TodoList.vue';
 import { toRefs, ref, reactive, onMounted, watch } from 'vue';
+
 export default {
   name: 'App',
   components: {
@@ -30,50 +32,33 @@ export default {
     TodoList,
   },
   setup() {
-    const todoList = ref([]);
-    // {
-    //   index: 0,
-    //   text: 'test',
-    //   status: false,
-    //   time: getTime(),
-    //   deadline: '2022/10/20',
-    // },
-    // {
-    //   index: 1,
-    //   text: 'test2',
-    //   status: false,
-    //   time: getTime(),
-    //   deadline: '2022/10/20',
-    // },
-
-    console.log(todoList);
+    let todoData = ref([]);
     const showContent = ref('TodoList');
 
-    function onClear() {
-      if (confirm('本当に削除してもよろしいですか？')) {
-        todoList.value = [];
-        localStorage.removeItem('todolist');
-      }
-    }
 
     function onCreate(data) {
-      console.log(data);
 
-      todoList.value.push({
-        index: todoList.value.length,
+      todoData.value.push({
+        index: todoData.value.length,
         text: data.text,
         status: false,
         time: getTime(),
         deadline: data.deadline,
       });
     }
+    function onClear() {
+      if (confirm('本当に削除してもよろしいですか？')) {
+        todoData.value = [];
+        localStorage.removeItem('todolist');
+      }
+    }
 
     function onCheck(data) {
-      todoList.value[data].status = !todoList.value[data].status;
-      if (todoList.value[data].status) {
-        todoList.value[data].time = '完了:' + getTime();
+      todoData.value[data].status = !todoData.value[data].status;
+      if (todoData.value[data].status) {
+        todoData.value[data].time = '完了:' + getTime();
       } else {
-        todoList.value[data].time = getTime();
+        todoData.value[data].time = getTime();
       }
     }
 
@@ -90,44 +75,47 @@ export default {
 
     function onDelete(data) {
       if (confirm('本当に削除してもよろしいですか？')) {
-        todoList.value.splice(data, 1);
-        todoList.value.forEach((todo, i) => {
+        todoData.value.splice(data, 1);
+        todoData.value.forEach((todo, i) => {
           todo.index = i;
         });
       }
     }
 
     function onEdit(num, data) {
-      console.log('edit');
-      todoList.value[num].text = data.text;
-      todoList.value[num].deadline = data.deadline;
+ 
+      todoData.value[num].text = data.text;
+      todoData.value[num].deadline = data.deadline;
     }
 
     onMounted(() => {
       if (localStorage.getItem('todolist') != '') {
-        todoList.value = JSON.parse(localStorage.getItem('todolist'));
+        todoData.value = JSON.parse(localStorage.getItem('todolist'));
+       
       }
     });
 
     watch(
-      () => todoList.value,
-      (list) => {
-        if (todoList != null) {
+      () => todoData.value,
+      (list,prevList)=> {
+    
           localStorage.setItem('todolist', JSON.stringify(list));
-        }
       },
       { deep: true }
     );
     return {
-      todoList,
+      todoData,
       showContent,
-      onCreate,
       onCheck,
       getTime,
       onClear,
       onDelete,
       onEdit,
+      onCreate,
     };
+  },
+  methods: {
+    
   },
 };
 </script>

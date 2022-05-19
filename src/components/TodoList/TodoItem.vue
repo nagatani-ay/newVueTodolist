@@ -10,8 +10,8 @@
         "
       ></custom-button>
 
-      <custom-textinput v-model="tempText.value"></custom-textinput>
-      <input type="date" v-model="tempDeadline.value" />
+      <custom-input type="text" v-model="tempText"></custom-input>
+      <custom-input type="date" v-model="tempDeadline"></custom-input>
       <custom-button BtnText="confirm" @click="confirmEdit"></custom-button>
     </div>
     <div class="todo__item" v-if="!isEdit">
@@ -29,11 +29,11 @@
 <script>
 import CustomButton from '../Form/Button.vue';
 import CustomCheckbox from '../Form/CheckBox.vue';
-import CustomTextinput from '../Form/TextInput.vue';
+import CustomInput from '../Form/TextInput.vue';
 import { ref } from 'vue';
 export default {
   name: 'TodoItem-Component',
-  components: { CustomButton, CustomCheckbox, CustomTextinput },
+  components: { CustomButton, CustomCheckbox, CustomInput },
 
   props: ['todo'],
   emits: ['update:item', 'delete:item', 'update:status'],
