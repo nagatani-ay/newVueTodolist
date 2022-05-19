@@ -17,7 +17,7 @@
         @clear:item="onClear"
       ></todo-list>
 
-      <schedule v-if="showContent == 'Schedule'"></schedule>
+      <schedule v-if="showContent == 'Schedule'" :todoList="todoData"></schedule>
       
     </div>
   </div>
@@ -38,7 +38,7 @@ export default {
   },
   setup() {
     let todoData = ref([]);
-    const showContent = ref('TodoList');
+    const showContent = ref('Schedule');
 
     function onCreate(data) {
 
