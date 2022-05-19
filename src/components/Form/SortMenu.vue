@@ -54,7 +54,9 @@ export default {
   height: 20px;
 }
 .ascend {
+  background-image: url(https://stackblitz.com/files/vue-7r2a4b/github/nagatani-ay/newVueTodolist/test/src/img/decend.png);
 }
 .decend {
+  background-image: url(https://stackblitz.com/files/vue-7r2a4b/github/nagatani-ay/newVueTodolist/test/src/img/acend.png);
 }
 </style>
