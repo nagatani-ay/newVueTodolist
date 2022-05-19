@@ -40,7 +40,6 @@ export default {
     let todoData = ref([]);
     const showContent = ref('TodoList');
 
-
     function onCreate(data) {
 
       todoData.value.push({
