@@ -4,7 +4,10 @@
       @create:item="$emit('create:item', $event)"
       @clear:item="$emit('clear:item', $event)"
       @update:filter="filterType = $event"
-      @sort:item="sortType = $event"
+      @sort:item="
+        sortType = $event.type;
+        sortOrder = $event.order;
+      "
     ></todo-menu>
   </div>
   <div>
@@ -39,6 +42,7 @@ export default {
   ],
   setup(props) {
     const sortType = ref('Text');
+    const sortOrder = ref('');
     const filterType = ref('全');
 
     const listFilter = computed(() => {
@@ -57,6 +61,14 @@ export default {
 
     const listSort = computed(() => {
       let sorted_list = [];
+      let order = 1;
+      console.log(sortType.value);
+      console.log(sortOrder.value);
+      if (sortOrder.value == 'ascend') {
+        order = 1;
+      } else {
+        order = -1;
+      }
       if (sortType.value == '') {
       } else {
       }
@@ -66,9 +78,9 @@ export default {
           .map((x) => x)
           .sort((a, b) => {
             if (a.text === b.text) {
-              return a.deadline < b.deadline ? -1 : 1;
+              return a.deadline < b.deadline ? -order : order;
             }
-            return a.text < b.text ? -1 : 1;
+            return a.text < b.text ? -order : order;
           });
         // 完了順
       } else if (sortType.value == 'Status') {
@@ -76,28 +88,34 @@ export default {
           .filter((x) => x.status == true)
           .sort((a, b) => {
             if (a.text === b.text) {
-              return a.deadline < b.deadline ? -1 : 1;
+              return a.deadline < b.deadline ? -order : order;
             }
-            return a.text < b.text ? -1 : 1;
+            return a.text < b.text ? -order : order;
           });
         let falselist = listFilter.value
           .filter((x) => x.status == false)
           .sort((a, b) => {
             if (a.text === b.text) {
-              return a.deadline < b.deadline ? -1 : 1;
+              return a.deadline < b.deadline ? -order : order;
             }
-            return a.text < b.text ? -1 : 1;
+            return a.text < b.text ? -order : order;
           });
-        sorted_list = truelist.concat(falselist);
+
+        if (order == 1) {
+          sorted_list = truelist.concat(falselist);
+        } else {
+          sorted_list = falselist.concat(truelist);
+        }
+
         // 最終更新時間
       } else if (sortType.value == 'Time') {
         sorted_list = listFilter.value
           .map((x) => x)
           .sort((a, b) => {
             if (a.time === b.time) {
-              return a.text < b.text ? -1 : 1;
+              return a.text < b.text ? -order : order;
             }
-            return a.time < b.time ? -1 : 1;
+            return a.time < b.time ? -order : order;
           });
         // 締切順
       } else if (sortType.value == 'Deadline') {
@@ -105,14 +123,14 @@ export default {
           .map((x) => x)
           .sort((a, b) => {
             if (a.deadline === b.deadline) {
-              return a.text < b.text ? -1 : 1;
+              return a.text < b.text ? -order : order;
             }
-            return a.deadline < b.deadline ? -1 : 1;
+            return a.deadline < b.deadline ? -order : order;
           });
       }
       return sorted_list;
     });
-    return { sortType, filterType, listFilter, listSort };
+    return { sortType, sortOrder, filterType, listFilter, listSort };
   },
 };
 </script>

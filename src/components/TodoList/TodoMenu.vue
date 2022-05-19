@@ -22,28 +22,14 @@
         </div>
       </div>
     </div>
-    <div class="todo__menu__item">
-      <custom-select
-        :sortList="sortTypeList"
-        :modelValue="selectSort"
-        @update:modelValue="
-          selectSort = $event;
-          $emit('sort:item', selectSort);
-        "
-      ></custom-select>
+    <!-- SortMenu -->
+    <div class="">
+      <sort-menu @sort:item="$emit('sort:item', $event)"></sort-menu>
     </div>
     <div class="todo__menu__item">
-      <label
-        >Filter:
-        <radio-button
-          v-for="filterItem in filterTypeList"
-          :key="filterItem"
-          :filter="filterItem"
-          group="FilterMenu"
-          v-model="selectFilter"
-          @update:modelValue="$emit('update:filter', selectFilter)"
-        ></radio-button>
-      </label>
+      <filter-menu
+        @update:filter="$emit('update:filter', $event)"
+      ></filter-menu>
     </div>
     <custom-button BtnText="clear" @click="$emit('clear:item')"></custom-button>
   </div>
@@ -52,23 +38,19 @@
 <script>
 import CustomButton from '../Form/Button.vue';
 import CustomTextinput from '../Form/TextInput.vue';
-import CustomSelect from '../Form/SortSelector.vue';
-import RadioButton from '../Form/RadioButton.vue';
+import SortMenu from '../Form/SortMenu.vue';
+import FilterMenu from '../Form/FilterMenu.vue';
 import { ref, reactive, computed } from 'vue';
 
 export default {
   name: 'TodoMenu-Component',
-  components: { CustomButton, CustomTextinput, CustomSelect, RadioButton },
+  components: { CustomButton, CustomTextinput, SortMenu, FilterMenu },
   props: ['todo'],
   emits: ['create:item', 'update:filter', 'clear:item', 'sort:item'],
   setup(props, context) {
     let isOpen = ref(false);
     let tempText = ref();
     let deadline = ref();
-    let selectFilter = '全';
-    let selectSort = '';
-    const sortTypeList = ref(['Text', 'Status', 'Time', 'Deadline']);
-    const filterTypeList = ref(['全', '済', '未']);
 
     function toggleMenu() {
       isOpen.value = !isOpen.value;
@@ -89,16 +71,11 @@ export default {
     }
 
     return {
-      sortTypeList,
       isOpen,
       tempText,
       deadline,
-      selectFilter,
-      selectSort,
       createEvent,
       toggleMenu,
-      sortTypeList,
-      filterTypeList,
     };
   },
 };
@@ -107,6 +84,8 @@ export default {
 <style>
 .todo__menu {
   display: flex;
+  align-items: center;
+  text-align: center;
 }
 
 .todo__addMenu {
