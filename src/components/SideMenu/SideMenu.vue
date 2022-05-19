@@ -1,6 +1,6 @@
 <template>
-  <button @click="isOpen = !isOpen">=</button>
-  <div class="SideMenu" v-if="isOpen">
+  <button @click="toggleSideMenu">=</button>
+  <div class="SideMenu" v-if="isOpenSideMenu">
     <ul>
       <menu-item
         v-for="menuItem in contentList"
@@ -13,24 +13,22 @@
 
 <script>
 import MenuItem from './MenuItem.vue';
-const contentList = ['TodoList', 'Flow'];
+import { ref } from 'vue';
 export default {
   name: 'sidemenu',
   components: { MenuItem },
-  data() {
-    return {
-      isOpen: false,
-    };
-  },
-  props: [],
   emits: ['showContent'],
-  methods: {},
-  computed: {
-    contentList: {
-      get() {
-        return contentList;
-      },
-    },
+  setup() {
+    let isOpenSideMenu = ref(false);
+    function toggleSideMenu() {
+      isOpenSideMenu.value = !isOpenSideMenu.value;
+    }
+    const contentList = ref(['TodoList', 'Flow']);
+    return {
+      isOpenSideMenu,
+      toggleSideMenu,
+      contentList,
+    };
   },
 };
 </script>
