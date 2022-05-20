@@ -10,7 +10,10 @@
     </div>
     <div class="body">
       <div class="calender__table" v-for="day in dayList">
-        <p class="calendar__day,day">{{ day }}</p>
+        <p>{{ day.year }}</p>
+        <p>{{ day.month }}</p>
+        <p class="calendar__day,day">{{ day.day }}</p>
+        <p>{{ day.dayofweek }}</p>
       </div>
     </div>
   </div>
@@ -20,28 +23,25 @@ import { ref, computed, onMounted } from 'vue';
 export default {
   props: ['todoList'],
   setup(props) {
-    let selectYear = ref('2022');
-    let selectMonth = ref('5');
+    let selectYear = ref(2022);
+    let selectMonth = ref(6);
     const dayOfWeeks = ['日', '月', '火', '水', '木', '金', '土'];
 
     function onChange(num) {
-      selectMonth = selectMonth + num;
+      selectMonth.value = selectMonth.value + num;
 
-      if (selectMonth < 1) {
-        selectYear--;
-        selectMonth = 12;
-      } else if (selectMonth > 12) {
-        selectYear++;
-        selectMonth = 1;
+      if (selectMonth.value < 1) {
+        selectYear.value--;
+        selectMonth.value = 12;
+      } else if (selectMonth.value > 12) {
+        selectYear.value++;
+        selectMonth.value = 1;
       }
-      console.log(selectYear);
-      console.log(selectMonth);
     }
 
     const dayList = computed(() => {
       let calendarDayList = [];
-      let date = new Date(selectYear.value, selectMonth.value - 1, 1);
-      let start = date.getDay();
+      let start = new Date(selectYear.value, selectMonth.value - 1, 1).getDay();
       let lastday = new Date(selectYear.value, selectMonth.value, 0).getDate();
       let beforeDay = new Date(
         selectYear.value,
@@ -51,40 +51,60 @@ export default {
 
       if (0 < start) {
         for (let i = 0; i < start; i++) {
-          calendarDayList[start - i - 1] = beforeDay - i;
+          calendarDayList[start - i - 1] = {
+            year: selectYear.value,
+            month: selectMonth.value - 1,
+            day: beforeDay - i,
+            dayofweek: dayOfWeeks[start - i - 1],
+          };
         }
       }
 
       for (let i = 0; i < lastday; i++) {
-        calendarDayList[i + start] = i + 1;
+        calendarDayList[i + start] = {
+          year: selectYear.value,
+          month: selectMonth.value,
+          day: i + 1,
+          dayofweek: dayOfWeeks[(i + start) % 7],
+        };
       }
-      console.log(lastday);
-      let nextDays = 35 - lastday;
-      console.log(nextDays);
+      console.log(calendarDayList[calendarDayList.length - 1]);
+      // let nextDays = 0;
+      // if (calendarDayList.slice(-1)[0].dayofweek != '土') {
+      //   // while (calendarDayList.slice(-1)[0].dayofweek != '土') {
+      //   let count = 0;
+      //   //   calendarDayList.push({
+      //   //     year: selectYear.value + 1,
+      //   //     month: selectMonth.value,
+      //   //     day: count + 1,
+      //   //     dayofweek: dayOfWeeks[(count - nextDays) % 7],
+      //   //   });
+      //   //   count++;
+      //   // }
+      //   // console.log('test');
 
-      for (let l = 0; l < nextDays; l++) {
-        calendarDayList.push(l + 1);
-      }
+      //   calendarDayList.push({
+      //     year: selectYear.value,
+      //     month: selectMonth.value + 1,
+      //     day: count + 1,
+      //     dayofweek: dayOfWeeks[],
+      //   });
+      // }
 
       return calendarDayList;
     });
 
-    function getDays(year, month) {
-      return new Date(parseInt(year, 10), parseInt(month + 1, 10), 0).getDate();
-    }
-
     onMounted(() => {
       const today = new Date();
-      selectYear = today.getFullYear();
+      selectYear.value = today.getFullYear();
 
-      selectMonth = today.getMonth() + 1;
+      selectMonth.value = today.getMonth() + 1;
     });
 
     return {
       selectMonth,
       selectYear,
       dayOfWeeks,
-      getDays,
       dayList,
       onChange,
     };
@@ -101,7 +121,6 @@ export default {
 
 .calender__table,
 .calendar__weekday {
-  display: flex;
   width: 12vw;
   height: 12vw;
   padding: 2px;
