@@ -1,5 +1,4 @@
 <template>
-  {{ fetchTodoList }}
   <button @click="onChange(-1)"><</button>
   <div class="calendar__title">{{ selectYear }}年{{ selectMonth }}月</div>
   <button @click="onChange(1)">></button>
@@ -12,8 +11,9 @@
     <div class="body">
       <div class="calender__table" v-for="day in dayList">
         <p class="calendar__day,day">{{ day.date.day }}</p>
-        <div class="calendar__todolist">
-          <p v-for="tododata in day.data">{{ tododata }}</p>
+        <div class="calendar__todo" v-for="tododata in day.data">
+          <input type="checkbox" :checked="tododata.status"/>
+          <span>{{ tododata.text }}</span>
         </div>
       </div>
     </div>
@@ -97,33 +97,24 @@ export default {
         }
       }
 
-      return calendarDayList;
-    });
-
-    const fetchTodoList = computed(() => {
-      dayList.value.forEach((list, i) => {
-        list.data = [];
-      });
       props.todoList.forEach((todo, i) => {
         let index;
-        let text = todo.text;
+        let data = todo;
         todo.deadline.year = parseInt(todo.deadline.year);
         todo.deadline.month = parseInt(todo.deadline.month);
         todo.deadline.day = parseInt(todo.deadline.day);
 
         let a = JSON.stringify(Object.values(todo.deadline));
-        dayList.value.forEach((list, i) => {
+        calendarDayList.forEach((list, i) => {
           let b = JSON.stringify(Object.values(list.date));
           if (a == b) {
             index = i;
           }
         });
-        dayList.value[index].data.push(text);
-
-        // JSON.stringify(Object.entries(calendarDayList.value[i].date))
+        calendarDayList[index].data.push(data);
       });
 
-      return 'test';
+      return calendarDayList;
     });
 
     onMounted(() => {
@@ -134,7 +125,7 @@ export default {
     });
 
     return {
-      fetchTodoList,
+      // fetchTodoList,
       selectMonth,
       selectYear,
       dayOfWeeks,
