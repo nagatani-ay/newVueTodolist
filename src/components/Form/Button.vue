@@ -5,10 +5,6 @@
 <script>
 export default {
   name: 'Button-Component',
-  components: {},
-  data() {
-    return {};
-  },
   props: ['BtnText'],
 };
 </script>

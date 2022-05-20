@@ -5,7 +5,7 @@
         BtnText=""
         class="addMenuButton"
         v-if="!isOpen"
-        @click="toggleMenu()"
+        @click="toggleMenu"
       ></custom-button>
       <div v-if="isOpen">
         <label
@@ -22,27 +22,14 @@
         </div>
       </div>
     </div>
-    <div class="todo__menu__item">
-      <custom-select
-        :sortList="sortList"
-        :modelValue="selectSort"
-        @update:modelValue="
-          selectSort = $event;
-          $emit('sort:item', selectSort);
-        "
-      ></custom-select>
+    <!-- SortMenu -->
+    <div class="">
+      <sort-menu @sort:item="$emit('sort:item', $event)"></sort-menu>
     </div>
     <div class="todo__menu__item">
-      <label
-        >Filter:
-        <radio-button
-          v-for="filterItem in filterList"
-          :filter="filterItem"
-          group="FilterMenu"
-          v-model="selectFilter"
-          @update:modelValue="$emit('update:filter', selectFilter)"
-        ></radio-button>
-      </label>
+      <filter-menu
+        @update:filter="$emit('update:filter', $event)"
+      ></filter-menu>
     </div>
     <custom-button BtnText="clear" @click="$emit('clear:item')"></custom-button>
   </div>
@@ -51,55 +38,45 @@
 <script>
 import CustomButton from '../Form/Button.vue';
 import CustomTextinput from '../Form/TextInput.vue';
-import CustomSelect from '../Form/SortSelector.vue';
-import RadioButton from '../Form/RadioButton.vue';
-
-const sortType = ['Text', 'Status', 'Time', 'Deadline'];
-const filterType = ['全', '済', '未'];
+import SortMenu from '../Form/SortMenu.vue';
+import FilterMenu from '../Form/FilterMenu.vue';
+import { ref, reactive, computed } from 'vue';
 
 export default {
   name: 'TodoMenu-Component',
-  components: { CustomButton, CustomTextinput, CustomSelect, RadioButton },
-  data() {
-    return {
-      isOpen: false,
-      tempText: '',
-      deadline: '',
-      selectFilter: '全',
-      selectSort: '',
-    };
-  },
+  components: { CustomButton, CustomTextinput, SortMenu, FilterMenu },
   props: ['todo'],
   emits: ['create:item', 'update:filter', 'clear:item', 'sort:item'],
-  methods: {
-    toggleMenu() {
-      this.isOpen = !this.isOpen;
-      this.tempText = '';
-      this.deadline = '';
-    },
-    createEvent() {
-      if (this.tempText == '') {
+  setup(props, context) {
+    let isOpen = ref(false);
+    let tempText = ref();
+    let deadline = ref();
+
+    function toggleMenu() {
+      isOpen.value = !isOpen.value;
+      tempText.value = undefined;
+      tempText.value = undefined;
+    }
+
+    function createEvent() {
+      if (tempText.value == '') {
         alert('内容を入力してください');
       } else {
-        this.$emit('create:item', {
-          text: this.tempText,
-          deadline: this.deadline,
+        context.emit('create:item', {
+          text: tempText.value,
+          deadline: deadline.value,
         });
-        this.toggleMenu();
+        toggleMenu();
       }
-    },
-  },
-  computed: {
-    filterList: {
-      get() {
-        return filterType;
-      },
-    },
-    sortList: {
-      get() {
-        return sortType;
-      },
-    },
+    }
+
+    return {
+      isOpen,
+      tempText,
+      deadline,
+      createEvent,
+      toggleMenu,
+    };
   },
 };
 </script>
@@ -107,6 +84,8 @@ export default {
 <style>
 .todo__menu {
   display: flex;
+  align-items: center;
+  text-align: center;
 }
 
 .todo__addMenu {

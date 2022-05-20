@@ -2,7 +2,6 @@
   <label>
     <input
       type="radio"
-      :id="filter"
       :value="filter"
       name="group"
       :checked="modelValue == filter"
@@ -10,14 +9,10 @@
     />{{ filter }}
   </label>
 </template>
-
 <script>
+import { ref } from 'vue';
 export default {
   name: 'RadioButton-Component',
-  components: {},
-  data() {
-    return {};
-  },
   props: ['modelValue', 'filter', 'group'],
   emits: ['update:modelValue'],
 };

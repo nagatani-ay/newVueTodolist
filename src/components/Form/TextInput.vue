@@ -1,6 +1,5 @@
 <template>
   <input
-    type="text"
     :value="modelValue"
     @input="$emit('update:modelValue', $event.target.value)"
   />
@@ -9,11 +8,7 @@
 <script>
 export default {
   name: 'TextInput-Component',
-  components: {},
-  data() {
-    return {};
-  },
-  props: ['modelValue'],
+  props: ['modelValue', 'inputType'],
   emits: ['update:modelValue'],
 };
 </script>

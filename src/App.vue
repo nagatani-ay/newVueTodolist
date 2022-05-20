@@ -1,4 +1,5 @@
-<template>
+<template
+
   <div id="container">
     <div class="sideMenu">
       <side-menu @showContent="showContent = $event"></side-menu>
@@ -8,13 +9,16 @@
       <h1>{{ showContent }}</h1>
       <todo-list
         v-if="showContent == 'TodoList'"
-        :todoList="todoList"
+        :todoList="todoData"
         @delete:item="onDelete"
-        @update:item="onUpdate"
+        @update:item="onEdit"
         @create:item="onCreate"
         @update:status="onCheck"
         @clear:item="onClear"
       ></todo-list>
+
+      <schedule v-if="showContent == 'Schedule'" :todoList="todoData"></schedule>
+      
     </div>
   </div>
 </template>
@@ -22,99 +26,47 @@
 <script>
 import SideMenu from './components/SideMenu/SideMenu.vue';
 import TodoList from './components/TodoList/TodoList.vue';
+import Schedule from './components/Schedule/Schedule.vue';
+import { toRefs, ref, reactive, onMounted, watch } from 'vue';
 
 export default {
   name: 'App',
   components: {
     SideMenu,
     TodoList,
+    Schedule,
   },
-  data() {
-    return {
-      todoList: [
-        {
-          index: 0,
-          text: 'test1',
-          status: false,
-          time: 'none',
-          deadline: 'test',
-        },
-        {
-          index: 1,
-          text: 'test2',
-          status: false,
-          time: 'none',
-          deadline: 'test',
-        },
-        {
-          index: 2,
-          text: 'test3',
-          status: false,
-          time: 'none',
-          deadline: 'test',
-        },
-        {
-          index: 3,
-          text: 'test4',
-          status: false,
-          time: 'none',
-          deadline: 'test',
-        },
-      ],
-      showContent: 'TodoList',
-    };
-  },
-  methods: {
-    onCheck(data) {
-      this.todoList[data].status = !this.todoList[data].status;
-      if (this.todoList[data].status == true) {
-        this.todoList[data].time = '完了:' + this.getTime();
-      } else {
-        this.todoList[data].time = this.getTime();
-        console.log('test');
-      }
-    },
-    onClear() {
-      let check = confirm('本当に削除してもよろしいですか？');
-      if (check) {
-        this.todoList = [];
-        localStorage.removeItem('todolist');
-      }
-    },
-    onCreate(data) {
-      this.todoList.push({
-        index: this.todoList.length,
+  setup() {
+    let todoData = ref([]);
+    const showContent = ref('TodoList');
+
+    function onCreate(data) {
+
+      todoData.value.push({
+        index: todoData.value.length,
         text: data.text,
         status: false,
-        time: this.getTime(),
+        time: getTime(),
         deadline: data.deadline,
       });
-    },
-
-    onDelete(num) {
-      let check = confirm('本当に削除してもよろしいですか？');
-      if (check) {
-        this.todoList.splice(num, 1);
-        this.todoList.forEach((todo, i) => {
-          todo.index = i;
-        });
+    }
+    function onClear() {
+      if (confirm('本当に削除してもよろしいですか？')) {
+        todoData.value = [];
+        localStorage.removeItem('todolist');
       }
-    },
-    onSort(data) {
-      console.log(data);
-      data.forEach((item, i) => {
-        item.index = i;
-      });
-      this.todoList = data;
+    }
 
-      console.log(data);
-    },
-    onUpdate(num, data) {
-      this.todoList[num].text = data.text;
-      this.todoList[num].deadline = data.deadline;
-    },
+    function onCheck(data) {
+      todoData.value[data].status = !todoData.value[data].status;
+      if (todoData.value[data].status) {
+        todoData.value[data].time = '完了:' + getTime();
+      } else {
+        todoData.value[data].time = getTime();
+      }
+    }
 
-    getTime() {
+    function getTime() {
       const today = new Date();
       const year = today.getFullYear();
       const month = today.getMonth() + 1;
@@ -122,37 +74,52 @@ export default {
       const hour = today.getHours();
       const minute = today.getMinutes();
       const second = today.getSeconds();
-      return (
-        year +
-        '/' +
-        month +
-        '/' +
-        day +
-        '/' +
-        hour +
-        ':' +
-        minute +
-        ':' +
-        second
-      );
-    },
-  },
-  computed: {},
-  mounted() {
-    if (localStorage.getItem('todolist') != '') {
-      // this.todoList = JSON.parse(localStorage.getItem('todolist'));
-    } else {
+      return `${year}/${month}/${day}/${hour}:${minute}:${second}`;
     }
-  },
-  // 変更の監視
-  watch: {
-    // 監視対象
-    todoList: {
-      handler() {
-        localStorage.setItem('todolist', JSON.stringify(this.todoList));
+
+    function onDelete(data) {
+      if (confirm('本当に削除してもよろしいですか？')) {
+        todoData.value.splice(data, 1);
+        todoData.value.forEach((todo, i) => {
+          todo.index = i;
+        });
+      }
+    }
+
+    function onEdit(num, data) {
+ 
+      todoData.value[num].text = data.text;
+      todoData.value[num].deadline = data.deadline;
+    }
+
+    onMounted(() => {
+      if (localStorage.getItem('todolist') != '') {
+        todoData.value = JSON.parse(localStorage.getItem('todolist'));
+       
+      }
+    });
+
+    watch(
+      () => todoData.value,
+      (list,prevList)=> {
+    
+          localStorage.setItem('todolist', JSON.stringify(list));
       },
-      deep: true,
-    },
+      { deep: true }
+    );
+    return {
+      todoData,
+      showContent,
+      onCheck,
+      getTime,
+      onClear,
+      onDelete,
+      onEdit,
+      onCreate,
+    };
+  },
+  methods: {
+    
   },
 };
 </script>
@@ -170,14 +137,14 @@ p {
   margin: 0;
 }
 
-button {
+/* button {
   background-color: transparent;
   border: none;
   cursor: pointer;
   outline: none;
   margin: 0 5px;
   appearance: none;
-}
+} */
 
 #container {
   display: flex;
