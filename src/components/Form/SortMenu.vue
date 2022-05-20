@@ -35,7 +35,7 @@ export default {
     }
 
     watch(sortType, (type, prevType) => {
-      sortOrder.value = 'decend';
+      sortOrder.value = 'ascend';
     });
     return {
       sortOrder,
