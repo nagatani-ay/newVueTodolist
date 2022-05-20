@@ -38,7 +38,7 @@ export default {
   },
   setup() {
     let todoData = ref([]);
-    const showContent = ref('Schedule');
+    const showContent = ref('TodoList');
 
     function onCreate(data) {
 
