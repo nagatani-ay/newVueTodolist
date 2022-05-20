@@ -38,8 +38,7 @@ export default {
   },
   setup() {
     let todoData = ref([]);
-    const showContent = ref('TodoList');
-
+    const showContent = ref('Schedule');
     function onCreate(data) {
 
       todoData.value.push({
@@ -150,10 +149,7 @@ p {
   display: flex;
 }
 .sideMenu {
-  display: block;
-  width: 15%;
 }
 .mainContent {
-  width: 85%;
 }
 </style>
