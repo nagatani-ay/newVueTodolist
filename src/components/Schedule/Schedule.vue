@@ -1,4 +1,5 @@
 <template>
+  {{ fetchTodoList }}
   <button @click="onChange(-1)"><</button>
   <div class="calendar__title">{{ selectYear }}年{{ selectMonth }}月</div>
   <button @click="onChange(1)">></button>
@@ -10,10 +11,10 @@
     </div>
     <div class="body">
       <div class="calender__table" v-for="day in dayList">
-        <p>{{ day.year }}</p>
-        <p>{{ day.month }}</p>
-        <p class="calendar__day,day">{{ day.day }}</p>
-        <p>{{ day.dayofweek }}</p>
+        <p class="calendar__day,day">{{ day.date.day }}</p>
+        <div class="calendar__todolist">
+          <p v-for="tododata in day.data">{{ tododata }}</p>
+        </div>
       </div>
     </div>
   </div>
@@ -24,7 +25,7 @@ export default {
   props: ['todoList'],
   setup(props) {
     let selectYear = ref(2022);
-    let selectMonth = ref(6);
+    let selectMonth = ref(5);
     const dayOfWeeks = ['日', '月', '火', '水', '木', '金', '土'];
 
     function onChange(num) {
@@ -52,46 +53,77 @@ export default {
       if (0 < start) {
         for (let i = 0; i < start; i++) {
           calendarDayList[start - i - 1] = {
-            year: selectYear.value,
-            month: selectMonth.value - 1,
-            day: beforeDay - i,
+            date: {
+              year: selectYear.value,
+              month: selectMonth.value - 1,
+              day: beforeDay - i,
+            },
             dayofweek: dayOfWeeks[start - i - 1],
+            data: [],
           };
         }
       }
 
       for (let i = 0; i < lastday; i++) {
         calendarDayList[i + start] = {
-          year: selectYear.value,
-          month: selectMonth.value,
-          day: i + 1,
+          date: {
+            year: selectYear.value,
+            month: selectMonth.value,
+            day: i + 1,
+          },
           dayofweek: dayOfWeeks[(i + start) % 7],
+          data: [],
         };
       }
-      console.log(calendarDayList[calendarDayList.length - 1]);
-      // let nextDays = 0;
-      // if (calendarDayList.slice(-1)[0].dayofweek != '土') {
-      //   // while (calendarDayList.slice(-1)[0].dayofweek != '土') {
-      //   let count = 0;
-      //   //   calendarDayList.push({
-      //   //     year: selectYear.value + 1,
-      //   //     month: selectMonth.value,
-      //   //     day: count + 1,
-      //   //     dayofweek: dayOfWeeks[(count - nextDays) % 7],
-      //   //   });
-      //   //   count++;
-      //   // }
-      //   // console.log('test');
 
-      //   calendarDayList.push({
-      //     year: selectYear.value,
-      //     month: selectMonth.value + 1,
-      //     day: count + 1,
-      //     dayofweek: dayOfWeeks[],
-      //   });
-      // }
+      // let nextDays = 0;
+      let count = calendarDayList.length % 7;
+      let daycount = 0;
+      while (calendarDayList[calendarDayList.length - 1].dayofweek != '土') {
+        calendarDayList.push({
+          date: {
+            year: selectYear.value,
+            month: selectMonth.value + 1,
+            day: daycount + 1,
+          },
+          dayofweek: dayOfWeeks[count],
+          data: [],
+        });
+        daycount++;
+        count++;
+
+        if (count > 10) {
+          break;
+        }
+      }
 
       return calendarDayList;
+    });
+
+    const fetchTodoList = computed(() => {
+      dayList.value.forEach((list, i) => {
+        list.data = [];
+      });
+      props.todoList.forEach((todo, i) => {
+        let index;
+        let text = todo.text;
+        todo.deadline.year = parseInt(todo.deadline.year);
+        todo.deadline.month = parseInt(todo.deadline.month);
+        todo.deadline.day = parseInt(todo.deadline.day);
+
+        let a = JSON.stringify(Object.values(todo.deadline));
+        dayList.value.forEach((list, i) => {
+          let b = JSON.stringify(Object.values(list.date));
+          if (a == b) {
+            index = i;
+          }
+        });
+        dayList.value[index].data.push(text);
+
+        // JSON.stringify(Object.entries(calendarDayList.value[i].date))
+      });
+
+      return 'test';
     });
 
     onMounted(() => {
@@ -102,6 +134,7 @@ export default {
     });
 
     return {
+      fetchTodoList,
       selectMonth,
       selectYear,
       dayOfWeeks,

@@ -62,8 +62,6 @@ export default {
     const listSort = computed(() => {
       let sorted_list = [];
       let order = 1;
-      console.log(sortType.value);
-      console.log(sortOrder.value);
       if (sortOrder.value == 'ascend') {
         order = -1;
       } else {

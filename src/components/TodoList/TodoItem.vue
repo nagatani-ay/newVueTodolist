@@ -21,7 +21,7 @@
       ></custom-checkbox>
       <p class="item__text">{{ todo.text }}</p>
       <p class="item__time">{{ todo.time }}</p>
-      <p class="item__dead">{{ todo.deadline }}</p>
+      <p class="item__dead">{{ tempDeadline }}</p>
     </div>
   </li>
 </template>
@@ -41,7 +41,7 @@ export default {
     let isEdit = ref(false);
     let EditBtnText = ref('edit');
     let tempText = ref(props.todo.text);
-    let tempDeadline = ref(props.todo.deadline);
+    let tempDeadline = ref(Object.values(props.todo.deadline).join('-'));
 
     function toggleEdit() {
       isEdit.value = !isEdit.value;
@@ -56,7 +56,7 @@ export default {
       toggleEdit();
       context.emit('update:item', {
         text: tempText.value,
-        deadline: tempDeadline.value,
+        deadline: tempDeadline.value.split('-'),
       });
     }
     return {

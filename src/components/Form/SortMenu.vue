@@ -60,9 +60,9 @@ export default {
   background-size: 100% 100%;
 }
 .ascend {
-  background-image: url(https://stackblitz.com/files/vue-7r2a4b/github/nagatani-ay/newVueTodolist/test/src/img/decend.png);
+  background-image: url(../../img/decend.png);
 }
 .decend {
-  background-image: url(https://stackblitz.com/files/vue-7r2a4b/github/nagatani-ay/newVueTodolist/test/src/img/acend.png);
+  background-image: url(../../img/acend.png);
 }
 </style>

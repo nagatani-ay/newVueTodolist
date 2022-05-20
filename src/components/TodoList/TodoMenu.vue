@@ -55,7 +55,7 @@ export default {
     function toggleMenu() {
       isOpen.value = !isOpen.value;
       tempText.value = undefined;
-      tempText.value = undefined;
+      deadline.value = undefined;
     }
 
     function createEvent() {
@@ -64,7 +64,7 @@ export default {
       } else {
         context.emit('create:item', {
           text: tempText.value,
-          deadline: deadline.value,
+          deadline: deadline.value.split('-'),
         });
         toggleMenu();
       }
@@ -99,7 +99,7 @@ export default {
   position: relative;
   left: 85%;
   display: block;
-  background-image: url(https://stackblitz.com/files/vue-7r2a4b/github/nagatani-ay/newVueTodolist/master/src/img/addButton.png);
+  background-image: url(../../img/addButton.png);
   width: 50px;
   height: 50px;
   background-repeat: no-repeat;
