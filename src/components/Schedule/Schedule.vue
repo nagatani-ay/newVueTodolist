@@ -1,7 +1,7 @@
 <template>
-  <button @click="onChange(-1)"><</button>
-  <div class="calendar__title">{{ selectYear }}年{{ selectMonth }}月</div>
-  <button @click="onChange(1)">></button>
+  <button @click="onChange(-1)">←</button>
+  <span class="calendar__title">{{ selectYear }}年{{ selectMonth }}月</span>
+  <button @click="onChange(1)">→</button>
   <div class="Schedule">
     <div class="header">
       <div class="calendar__weekday" v-for="dayOfWeek in dayOfWeeks">
@@ -9,11 +9,22 @@
       </div>
     </div>
     <div class="body">
-      <div class="calender__table" v-for="day in dayList">
-        <p class="calendar__day,day">{{ day.date.day }}</p>
-        <div class="calendar__todo" v-for="tododata in day.data">
-          <input type="checkbox" :checked="tododata.status" />
-          <span>{{ tododata.text }}</span>
+      <div
+        class="calender__table"
+        v-for="dayitem in dayList"
+        :key="dayitem.date"
+      >
+        <p class="calendar__day,day">{{ dayitem.date.day }}</p>
+
+        <div v-if="todoDeadlineList[Object.values(dayitem.date).join('-')]">
+          <p
+            v-for="item in todoDeadlineList[
+              Object.values(dayitem.date).join('-')
+            ]"
+            :key="item.index"
+          >
+            {{ item.text }}
+          </p>
         </div>
       </div>
     </div>
@@ -21,13 +32,16 @@
 </template>
 <script>
 import { ref, computed, onMounted } from 'vue';
+
 export default {
-  props: ['todoList'],
+  props: ['todolist'],
+  components: {},
   setup(props) {
     const selectYear = ref(2022);
     const selectMonth = ref(5);
     const dayOfWeeks = ['日', '月', '火', '水', '木', '金', '土'];
 
+    console.log(Editor.editItem());
     function onChange(num) {
       selectMonth.value = selectMonth.value + num;
 
@@ -59,7 +73,6 @@ export default {
               day: beforeDay - i,
             },
             dayofweek: dayOfWeeks[start - i - 1],
-            data: [],
           };
         }
       }
@@ -72,7 +85,6 @@ export default {
             day: i + 1,
           },
           dayofweek: dayOfWeeks[(i + start) % 7],
-          data: [],
         };
       }
 
@@ -87,7 +99,6 @@ export default {
             day: daycount + 1,
           },
           dayofweek: dayOfWeeks[count],
-          data: [],
         });
         daycount++;
         count++;
@@ -117,6 +128,25 @@ export default {
       return calendarDayList;
     });
 
+    const todoDeadlineList = computed(() => {
+      const result = {};
+
+      props.todolist.forEach((todo, i) => {
+        const key = Object.values(todo.deadline).join('-');
+        if (!result[key]) {
+          result[key] = [];
+        }
+        result[key].push({
+          index: todo.index,
+          text: todo.text,
+          status: todo.status,
+          time: todo.time,
+          deadline: todo.deadline,
+        });
+      });
+      return result;
+    });
+
     onMounted(() => {
       const today = new Date();
       selectYear.value = today.getFullYear();
@@ -131,6 +161,7 @@ export default {
       dayOfWeeks,
       dayList,
       onChange,
+      todoDeadlineList,
     };
   },
 };

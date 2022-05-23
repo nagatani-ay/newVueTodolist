@@ -29,6 +29,7 @@
 </template>
 
 <script>
+
 import CustomButton from '../Form/Button.vue';
 import CustomCheckbox from '../Form/CheckBox.vue';
 import CustomInput from '../Form/TextInput.vue';
@@ -51,7 +52,7 @@ export default {
 
     function confirmEdit() {
       toggleEdit();
-      const [year, month, day] = tempDeadline.value.split('-');
+      const [year, month, day] = tempDeadline.value.split('-').map(Number);
       context.emit('update:item', {
         text: tempText.value,
         deadline: {

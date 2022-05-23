@@ -17,7 +17,7 @@
         @clear:item="onClear"
       ></todo-list>
 
-      <schedule v-if="showContent == 'Schedule'" :todoList="todoData"></schedule>
+      <schedule v-if="showContent == 'Schedule'" :todolist="todoData"></schedule>
       
     </div>
   </div>
@@ -37,8 +37,20 @@ export default {
     Schedule,
   },
   setup() {
-    const todoData = ref([]);
-    const showContent = ref('TodoList');
+    const todoData = ref([
+      // {
+      //   index: 0,
+      //   text: "test1",
+      //   status: false,
+      //   time: getTime(),
+      //   deadline:{
+      //     year:2022,
+      //     month:5,
+      //     day:5,
+      //   },
+      // }
+      ]);
+    const showContent = ref('Schedule');
     function onCreate(data) {
       
 
@@ -80,9 +92,7 @@ export default {
     function onDelete(data) {
       if (confirm('本当に削除してもよろしいですか？')) {
         todoData.value.splice(data, 1);
-        todoData.value.forEach((todo, i) => {
-          todo.index = i;
-        });
+ 
       }
     }
 
