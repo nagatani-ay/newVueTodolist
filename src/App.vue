@@ -37,18 +37,17 @@ export default {
     Schedule,
   },
   setup() {
-    let todoData = ref([]);
-    const showContent = ref('Schedule');
+    const todoData = ref([]);
+    const showContent = ref('TodoList');
     function onCreate(data) {
       
-      let array= data.deadline;
-      console.log(array)
+
       todoData.value.push({
         index: todoData.value.length,
         text: data.text,
         status: false,
         time: getTime(),
-        deadline: {year:data.deadline.shift(),month:data.deadline.shift(),day:data.deadline.shift()},
+        deadline:data.deadline,
       });
     }
     function onClear() {
@@ -90,7 +89,7 @@ export default {
     function onEdit(num, data) {
  
       todoData.value[num].text = data.text;
-      todoData.value[num].deadline = {year:data.deadline.shift(),month:data.deadline.shift(),day:data.deadline.shift()};
+      todoData.value[num].deadline = data.deadline;
     }
 
     onMounted(() => {

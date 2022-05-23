@@ -1,6 +1,8 @@
 <template>
   <li>
-    <custom-button :BtnText="EditBtnText" @click="toggleEdit"></custom-button>
+    <custom-button @click="toggleEdit">{{
+      isEdit ? 'cancel' : 'edit'
+    }}</custom-button>
     <div class="todo__edititem" v-if="isEdit">
       <custom-button
         BtnText="delete"
@@ -38,30 +40,37 @@ export default {
   props: ['todo'],
   emits: ['update:item', 'delete:item', 'update:status'],
   setup(props, context) {
-    let isEdit = ref(false);
-    let EditBtnText = ref('edit');
-    let tempText = ref(props.todo.text);
-    let tempDeadline = ref(Object.values(props.todo.deadline).join('-'));
+    const isEdit = ref(false);
+
+    const tempText = ref(props.todo.text);
+    const tempDeadline = ref(getDeadline());
 
     function toggleEdit() {
       isEdit.value = !isEdit.value;
-      if (EditBtnText.value == 'edit') {
-        EditBtnText.value = 'cancel';
-      } else {
-        EditBtnText.value = 'edit';
-      }
     }
 
     function confirmEdit() {
       toggleEdit();
+      const [year, month, day] = tempDeadline.value.split('-');
       context.emit('update:item', {
         text: tempText.value,
-        deadline: tempDeadline.value.split('-'),
+        deadline: {
+          year,
+          month,
+          day,
+        },
       });
     }
+
+    function getDeadline() {
+      const list = Object.values(props.todo.deadline)
+        .map((x) => x.toString().padStart(2, '0'))
+        .join('-');
+      return list;
+    }
+
     return {
       isEdit,
-      EditBtnText,
       tempText,
       tempDeadline,
       toggleEdit,

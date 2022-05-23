@@ -12,7 +12,7 @@
       <div class="calender__table" v-for="day in dayList">
         <p class="calendar__day,day">{{ day.date.day }}</p>
         <div class="calendar__todo" v-for="tododata in day.data">
-          <input type="checkbox" :checked="tododata.status"/>
+          <input type="checkbox" :checked="tododata.status" />
           <span>{{ tododata.text }}</span>
         </div>
       </div>
@@ -24,8 +24,8 @@ import { ref, computed, onMounted } from 'vue';
 export default {
   props: ['todoList'],
   setup(props) {
-    let selectYear = ref(2022);
-    let selectMonth = ref(5);
+    const selectYear = ref(2022);
+    const selectMonth = ref(5);
     const dayOfWeeks = ['日', '月', '火', '水', '木', '金', '土'];
 
     function onChange(num) {
@@ -97,22 +97,22 @@ export default {
         }
       }
 
-      props.todoList.forEach((todo, i) => {
-        let index;
-        let data = todo;
-        todo.deadline.year = parseInt(todo.deadline.year);
-        todo.deadline.month = parseInt(todo.deadline.month);
-        todo.deadline.day = parseInt(todo.deadline.day);
+      // props.todoList.forEach((todo, i) => {
+      //   let index;
+      //   let data = todo;
+      //   todo.deadline.year = parseInt(todo.deadline.year);
+      //   todo.deadline.month = parseInt(todo.deadline.month);
+      //   todo.deadline.day = parseInt(todo.deadline.day);
 
-        let a = JSON.stringify(Object.values(todo.deadline));
-        calendarDayList.forEach((list, i) => {
-          let b = JSON.stringify(Object.values(list.date));
-          if (a == b) {
-            index = i;
-          }
-        });
-        calendarDayList[index].data.push(data);
-      });
+      //   let a = JSON.stringify(Object.values(todo.deadline));
+      //   calendarDayList.forEach((list, i) => {
+      //     let b = JSON.stringify(Object.values(list.date));
+      //     if (a == b) {
+      //       index = i;
+      //     }
+      //   });
+      //   calendarDayList[index].data.push(data);
+      // });
 
       return calendarDayList;
     });

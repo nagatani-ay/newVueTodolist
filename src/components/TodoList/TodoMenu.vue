@@ -48,9 +48,9 @@ export default {
   props: ['todo'],
   emits: ['create:item', 'update:filter', 'clear:item', 'sort:item'],
   setup(props, context) {
-    let isOpen = ref(false);
-    let tempText = ref();
-    let deadline = ref();
+    const isOpen = ref(false);
+    const tempText = ref('');
+    const deadline = ref('');
 
     function toggleMenu() {
       isOpen.value = !isOpen.value;
@@ -59,12 +59,17 @@ export default {
     }
 
     function createEvent() {
-      if (tempText.value == '') {
+      if ((tempText.value == '') | (deadline.value == '')) {
         alert('内容を入力してください');
       } else {
+        const [year, month, day] = deadline.value.split('-').map(Number);
         context.emit('create:item', {
           text: tempText.value,
-          deadline: deadline.value.split('-'),
+          deadline: {
+            year,
+            month,
+            day,
+          },
         });
         toggleMenu();
       }
