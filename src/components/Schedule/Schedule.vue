@@ -41,7 +41,6 @@ export default {
     const selectMonth = ref(5);
     const dayOfWeeks = ['日', '月', '火', '水', '木', '金', '土'];
 
-    console.log(Editor.editItem());
     function onChange(num) {
       selectMonth.value = selectMonth.value + num;
 
