@@ -16,12 +16,7 @@
       >
         <p class="calendar__day,day">{{ dayitem.date.day }}</p>
         <add-menu
-          @create:item="
-            $emit('create:item', {
-              text: $event.text,
-              deadline: dayitem.date,
-            })
-          "
+          @create:item="$emit('create:item', $event)"
           :source="'schedule'"
           :selectDate="dayitem.date"
         ></add-menu>
@@ -52,7 +47,7 @@ import AddMenu from '../Form/AddMenu.vue';
 export default {
   props: ['todoList'],
   components: { AddMenu, TodoItem },
-  emits: ['update:item', 'delete:item', 'update:status'],
+  emits: ['update:item', 'delete:item', 'update:status', 'create:item'],
   setup(props) {
     const selectYear = ref(2022);
     const selectMonth = ref(5);

@@ -22,8 +22,9 @@
         :todoList="todoData"
         @delete:item="onDelete"
         @update:item="onEdit"
-        @update:status="onCheck">
-      </schedule>
+        @update:status="onCheck"
+        @create:item="onCreate"
+      ></schedule>
       
     </div>
   </div>
@@ -58,8 +59,7 @@ export default {
       ]);
     const showContent = ref('Schedule');
     function onCreate(data) {
-      
-
+  
       todoData.value.push({
         index: todoData.value.length,
         text: data.text,

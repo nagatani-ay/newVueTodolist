@@ -12,10 +12,7 @@
         >Todo:
           <custom-textinput v-model="tempText"></custom-textinput>
       </label>
-      <label
-        >完了予定:
-          <p type="date" >{{selectDate}}</p>
-      </label>
+
     <div class="addMenuControl">
       <custom-button BtnText="cancel" @click="toggleMenu()"></custom-button>
       <custom-button BtnText="Add" @click="createEvent()"></custom-button>
@@ -63,13 +60,13 @@ export default {
     function createEvent() {
       if (tempText.value == null) {
         alert('内容を入力してください');
-      }else if(deadline.value == null) {
+      }else if((deadline.value == null)&&(props.source=="todomenu")) {
         alert('期限を入力してください');
       } else {
-        if(source=="schedule"){
+        if(props.source=="schedule"){
           context.emit('create:item', {
           text: tempText.value,
-          deadline: selectDate,
+          deadline: props.selectDate,
           });
         }else{
      const [year, month, day] = deadline.value.split('-').map(Number);
