@@ -16,6 +16,7 @@
         v-for="todo in listSort"
         :key="todo.index"
         :todo="todo"
+        :source="'todolist'"
         @delete:item="$emit('delete:item', todo.index)"
         @update:item="$emit('update:item', todo.index, $event)"
         @update:status="$emit('update:status', todo.index)"

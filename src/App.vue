@@ -12,12 +12,17 @@
         :todoList="todoData"
         @delete:item="onDelete"
         @update:item="onEdit"
-        @create:item="onCreate"
         @update:status="onCheck"
+        @create:item="onCreate"
         @clear:item="onClear"
       ></todo-list>
 
-      <schedule v-if="showContent == 'Schedule'" :todolist="todoData"></schedule>
+      <schedule v-if="showContent == 'Schedule'" 
+        :todoList="todoData"
+        @delete:item="onDelete"
+        @update:item="onEdit"
+        @update:status="onCheck">
+      </schedule>
       
     </div>
   </div>
@@ -97,6 +102,7 @@ export default {
     }
 
     function onEdit(num, data) {
+      console.log("test")
  
       todoData.value[num].text = data.text;
       todoData.value[num].deadline = data.deadline;

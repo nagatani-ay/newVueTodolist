@@ -17,14 +17,19 @@
         <p class="calendar__day,day">{{ dayitem.date.day }}</p>
 
         <div v-if="todoDeadlineList[Object.values(dayitem.date).join('-')]">
-          <p
-            v-for="item in todoDeadlineList[
-              Object.values(dayitem.date).join('-')
-            ]"
-            :key="item.index"
-          >
-            {{ item.text }}
-          </p>
+          <ul>
+            <todo-item
+              v-for="item in todoDeadlineList[
+                Object.values(dayitem.date).join('-')
+              ]"
+              :key="item.index"
+              :todo="item"
+              :source="'schedule'"
+              @delete:item="$emit('delete:item', item.index)"
+              @update:item="$emit('update:item', item.index, $event)"
+              @update:status="$emit('update:status', item.index)"
+            ></todo-item>
+          </ul>
         </div>
       </div>
     </div>
@@ -32,10 +37,11 @@
 </template>
 <script>
 import { ref, computed, onMounted } from 'vue';
-
+import TodoItem from '../TodoList/TodoItem.vue';
 export default {
-  props: ['todolist'],
-  components: {},
+  props: ['todoList'],
+  components: { TodoItem },
+  emits: ['update:item', 'delete:item', 'update:status'],
   setup(props) {
     const selectYear = ref(2022);
     const selectMonth = ref(5);
@@ -130,7 +136,7 @@ export default {
     const todoDeadlineList = computed(() => {
       const result = {};
 
-      props.todolist.forEach((todo, i) => {
+      props.todoList.forEach((todo, i) => {
         const key = Object.values(todo.deadline).join('-');
         if (!result[key]) {
           result[key] = [];
