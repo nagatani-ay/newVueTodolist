@@ -1,27 +1,6 @@
 <template>
   <div class="todo__menu">
-    <div class="todo__addMenu">
-      <custom-button
-        BtnText=""
-        class="addMenuButton"
-        v-if="!isOpen"
-        @click="toggleMenu"
-      ></custom-button>
-      <div v-if="isOpen">
-        <label
-          >Todo:
-          <custom-textinput v-model="tempText"></custom-textinput>
-        </label>
-        <label
-          >完了予定:
-          <input type="date" v-model="deadline" />
-        </label>
-        <div class="addMenuControl">
-          <custom-button BtnText="cancel" @click="toggleMenu()"></custom-button>
-          <custom-button BtnText="Add" @click="createEvent()"></custom-button>
-        </div>
-      </div>
-    </div>
+    <add-menu @create:item="$emit('create:item', $event)":source="'todomenu'"></add-menu>
     <!-- SortMenu -->
     <div class="">
       <sort-menu @sort:item="$emit('sort:item', $event)"></sort-menu>
@@ -36,6 +15,7 @@
 </template>
 
 <script>
+import AddMenu from '../Form/AddMenu.vue';
 import CustomButton from '../Form/Button.vue';
 import CustomTextinput from '../Form/TextInput.vue';
 import SortMenu from '../Form/SortMenu.vue';
@@ -44,44 +24,11 @@ import { ref, reactive, computed } from 'vue';
 
 export default {
   name: 'TodoMenu-Component',
-  components: { CustomButton, CustomTextinput, SortMenu, FilterMenu },
+  components: { AddMenu, CustomButton, CustomTextinput, SortMenu, FilterMenu },
   props: ['todo'],
   emits: ['create:item', 'update:filter', 'clear:item', 'sort:item'],
   setup(props, context) {
-    const isOpen = ref(false);
-    const tempText = ref('');
-    const deadline = ref('');
-
-    function toggleMenu() {
-      isOpen.value = !isOpen.value;
-      tempText.value = undefined;
-      deadline.value = undefined;
-    }
-
-    function createEvent() {
-      if ((tempText.value == '') | (deadline.value == '')) {
-        alert('内容を入力してください');
-      } else {
-        const [year, month, day] = deadline.value.split('-').map(Number);
-        context.emit('create:item', {
-          text: tempText.value,
-          deadline: {
-            year,
-            month,
-            day,
-          },
-        });
-        toggleMenu();
-      }
-    }
-
-    return {
-      isOpen,
-      tempText,
-      deadline,
-      createEvent,
-      toggleMenu,
-    };
+    return {};
   },
 };
 </script>
@@ -93,21 +40,5 @@ export default {
   text-align: center;
 }
 
-.todo__addMenu {
-  width: 100%;
-  text-align: center;
-  position: fixed;
-  right: 0;
-  bottom: 0;
-}
-.addMenuButton {
-  position: relative;
-  left: 85%;
-  display: block;
-  background-image: url(../../img/addButton.png);
-  width: 50px;
-  height: 50px;
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-}
+
 </style>

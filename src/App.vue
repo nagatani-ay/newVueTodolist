@@ -2,7 +2,8 @@
 
   <div id="container">
     <div class="sideMenu">
-      <side-menu @showContent="showContent = $event"></side-menu>
+      <side-menu @showContent="showContent = $event"
+      :source="'todomenu'"></side-menu>
     </div>
 
     <div class="mainContent">
@@ -169,4 +170,6 @@ p {
 }
 .mainContent {
 }
+
+
 </style>

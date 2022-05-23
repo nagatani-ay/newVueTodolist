@@ -15,6 +15,16 @@
         :key="dayitem.date"
       >
         <p class="calendar__day,day">{{ dayitem.date.day }}</p>
+        <add-menu
+          @create:item="
+            $emit('create:item', {
+              text: $event.text,
+              deadline: dayitem.date,
+            })
+          "
+          :source="'schedule'"
+          :selectDate="dayitem.date"
+        ></add-menu>
 
         <div v-if="todoDeadlineList[Object.values(dayitem.date).join('-')]">
           <ul>
@@ -38,9 +48,10 @@
 <script>
 import { ref, computed, onMounted } from 'vue';
 import TodoItem from '../TodoList/TodoItem.vue';
+import AddMenu from '../Form/AddMenu.vue';
 export default {
   props: ['todoList'],
-  components: { TodoItem },
+  components: { AddMenu, TodoItem },
   emits: ['update:item', 'delete:item', 'update:status'],
   setup(props) {
     const selectYear = ref(2022);
