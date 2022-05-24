@@ -7,11 +7,11 @@
       <router-view
         :todoList="todoList"
         :windowSize="windowSize"
-        @delete:item="$emit('delete:item'), $event"
-        @update:item="$emit('update:item'), $event"
-        @update:status="$emit('update:status'), $event"
-        @create:item="$emit('create:item'), $event"
-        @clear:item="$emit('clear:item'), $event"
+        @delete:item="$emit('delete:item', $event)"
+        @update:item="$emit('update:item', $event)"
+        @update:status="$emit('update:status', $event)"
+        @create:item="$emit('create:item', $event)"
+        @clear:item="$emit('clear:item', $event)"
       ></router-view>
     </div>
   </div>
@@ -33,4 +33,15 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+#container {
+  display: flex;
+}
+.sideMenu {
+  width: 10%;
+  max-width: 100px;
+}
+.mainContent {
+  width: 90%;
+}
+</style>

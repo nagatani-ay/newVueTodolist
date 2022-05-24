@@ -56,7 +56,7 @@
                 :todo="item"
                 :source="'schedule'"
                 @delete:item="$emit('delete:item', item.code)"
-                @update:item="$emit('update:item', item.code, $event)"
+                @update:item="$emit('update:item', $event)"
                 @update:status="$emit('update:status', item.code)"
               ></todo-item>
             </transition-group>
@@ -74,7 +74,13 @@ import CustomButton from '../Form/Button.vue';
 export default {
   props: ['todoList', 'windowSize'],
   components: { AddMenu, TodoItem, CustomButton },
-  emits: ['update:item', 'delete:item', 'update:status', 'create:item'],
+  emits: [
+    'update:item',
+    'delete:item',
+    'update:status',
+    'create:item',
+    'clear:item',
+  ],
   setup(props) {
     const selectYear = ref(2022);
     const selectMonth = ref(5);

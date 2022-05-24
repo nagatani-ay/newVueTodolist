@@ -1,5 +1,5 @@
 <template>
-  <li @dblclick="toggleEdit">
+  <li >
     <custom-button v-if="sourceType == 'todolist'" @click="toggleEdit">edit</custom-button>
    
     <div class="EditMenu" v-if="isEdit">
@@ -15,8 +15,11 @@
     </div>
    
     <div class="todo__item" v-if="!isEdit">
-      <custom-checkbox :modelValue="todo.status" @update:modelValue="$emit('update:status')"></custom-checkbox>
-      <span>
+      <custom-checkbox 
+        :modelValue="todo.status" 
+        @update:modelValue="$emit('update:status')">
+      </custom-checkbox>
+      <span @dblclick="toggleEdit">
         <span class="item__text">{{ todo.text }}</span>
         <span v-if="sourceType == 'todolist'" class="item__time">
           {{todo.time}}
@@ -55,6 +58,7 @@ export default {
       toggleEdit();
       const [year, month, day] = tempDeadline.value.split('-').map(Number);
       context.emit('update:item', {
+        code: props.todo.code,
         text: tempText.value,
         deadline: {
           year,

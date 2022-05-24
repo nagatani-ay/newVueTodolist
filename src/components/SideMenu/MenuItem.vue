@@ -1,6 +1,6 @@
 <template>
   <router-link :to="menuName">
-    <li>{{ menuName }}</li>
+    <li class="sidemenu__item">{{ menuName }}</li>
   </router-link>
 </template>
 
@@ -16,4 +16,9 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.sidemenu__item:hover {
+  background-color: #f5f5f5;
+}
+
+</style>

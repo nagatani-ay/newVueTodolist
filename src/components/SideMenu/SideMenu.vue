@@ -1,18 +1,17 @@
 <template>
   <div class="sidemenu">
     <button class="sidemenu__button" @click="toggleSideMenu">=</button>
-    <transition name="slide-fade">
-      <div v-if="isOpenSideMenu">
-        <ul class="sidemenu__list">
-          <menu-item
-            class="sidemenu__list__item"
-            v-for="menuItem in contentList"
-            @click="toggleSideMenu"
-            :menuName="menuItem"
-          ></menu-item>
-        </ul>
-      </div>
-    </transition>
+
+    <div v-if="isOpenSideMenu">
+      <ul class="sidemenu__list">
+        <menu-item
+          class="sidemenu__list__item"
+          v-for="menuItem in contentList"
+          @click="toggleSideMenu"
+          :menuName="menuItem"
+        ></menu-item>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -42,8 +41,7 @@ export default {
 <style scoped>
 .sidemenu {
   display: flex;
-  padding: 10px;
-  align-items: center;
+  flex-direction: column;
 }
 
 .sidemenu__button {
@@ -53,12 +51,11 @@ export default {
 }
 .sidemenu__list {
   display: flex;
+  flex-direction: column;
 }
 
 .sidemenu__list__item {
   margin: 0 5px;
 }
-li:hover {
-  background-color: #f5f5f5;
-}
+
 </style>

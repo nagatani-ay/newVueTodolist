@@ -68,11 +68,14 @@ export default {
     }
 
     function onCheck(data) {
-      todoData.value[data].status = !todoData.value[data].status;
-      if (todoData.value[data].status) {
-        todoData.value[data].time = '完了:' + getTime();
+      const codes = todoData.value.map((x) => x.code);
+      const target = codes.indexOf(data);
+
+      todoData.value[target].status = !todoData.value[target].status;
+      if (todoData.value[target].status) {
+        todoData.value[target].time = '完了:' + getTime();
       } else {
-        todoData.value[data].time = getTime();
+        todoData.value[target].time = getTime();
       }
     }
 
@@ -97,11 +100,12 @@ export default {
       }
     }
 
-    function onEdit(num, data) {
-      console.log('test');
+    function onEdit(data) {
+      const codes = todoData.value.map((x) => x.code);
+      const target = codes.indexOf(data.code);
 
-      todoData.value[num].text = data.text;
-      todoData.value[num].deadline = data.deadline;
+      todoData.value[target].text = data.text;
+      todoData.value[target].deadline = data.deadline;
     }
 
     onMounted(() => {
@@ -133,7 +137,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 ul,
 li {
   list-style: none;
@@ -145,22 +149,5 @@ p,
 h1 {
   padding: 0;
   margin: 0;
-}
-
-/* button {
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  outline: none;
-  margin: 0 5px;
-  appearance: none;
-} */
-
-#container {
-  display: flex;
-}
-.sideMenu {
-}
-.mainContent {
 }
 </style>

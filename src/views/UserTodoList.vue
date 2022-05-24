@@ -1,12 +1,13 @@
 <template>
+  <h1>TodoList</h1>
   <todo-list
     :todoList="todoList"
     :windowSize="windowSize"
-    @delete:item="$emit('delete:item'), $event"
-    @update:item="$emit('update:item'), $event"
-    @update:status="$emit('update:status'), $event"
-    @create:item="$emit('create:item'), $event"
-    @clear:item="$emit('clear:item'), $event"
+    @delete:item="$emit('delete:item', $event)"
+    @update:item="$emit('update:item', $event)"
+    @update:status="$emit('update:status', $event)"
+    @create:item="$emit('create:item', $event)"
+    @clear:item="$emit('clear:item', $event)"
   ></todo-list>
 </template>
 

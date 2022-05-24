@@ -18,7 +18,7 @@
         :todo="todo"
         :source="'todolist'"
         @delete:item="$emit('delete:item', todo.code)"
-        @update:item="$emit('update:item', todo.code, $event)"
+        @update:item="$emit('update:item', $event)"
         @update:status="$emit('update:status', todo.code)"
       ></todo-item>
     </ul>
