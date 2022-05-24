@@ -46,7 +46,7 @@
           v-if="todoDeadlineList[Object.values(dayitem.date).join('-')]"
         >
           <ul>
-            <transition-group name="list">
+            <transition-group appear name="list">
               <todo-item
                 class="calender__todo"
                 v-for="item in todoDeadlineList[

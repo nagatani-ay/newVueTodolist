@@ -7,19 +7,22 @@
     </div>
 
     <div class="mainContent">
-      <h1>{{ showContent }}</h1>
-      <todo-list
-        v-if="showContent == 'TodoList'"
-        :todoList="todoData"
-        @delete:item="onDelete"
-        @update:item="onEdit"
-        @update:status="onCheck"
-        @create:item="onCreate"
-        @clear:item="onClear"
-        :windowSize="windowSize"
-      ></todo-list>
+      <!-- <h1>{{ showContent }}</h1>           v-if="showContent == 'TodoList'" |v-if="showContent == 'Schedule'" -->
 
-      <schedule v-if="showContent == 'Schedule'" 
+      <!-- <router-link to="/">
+        <todo-list
+          :todoList="todoData"
+          @delete:item="onDelete"
+          @update:item="onEdit"
+          @update:status="onCheck"
+          @create:item="onCreate"
+          @clear:item="onClear"
+          :windowSize="windowSize"
+        ></todo-list>
+      </router-link>
+
+      <router-link to="/schedule">
+      <schedule 
         :todoList="todoData"
         @delete:item="onDelete"
         @update:item="onEdit"
@@ -27,7 +30,9 @@
         @create:item="onCreate"
         :windowSize="windowSize"
       ></schedule>
-      
+      </router-link> -->
+
+        <router-view></router-view>
     </div>
   </div>
 </template>
