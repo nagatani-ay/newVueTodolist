@@ -1,6 +1,9 @@
 <template>
   <div class="todo__menu">
-    <add-menu @create:item="$emit('create:item', $event)":source="'todomenu'"></add-menu>
+    <add-menu
+      @create:item="$emit('create:item', $event)"
+      :source="'todomenu'"
+    ></add-menu>
     <!-- SortMenu -->
     <div class="">
       <sort-menu @sort:item="$emit('sort:item', $event)"></sort-menu>
@@ -38,7 +41,6 @@ export default {
   display: flex;
   align-items: center;
   text-align: center;
+  position: relative;
 }
-
-
 </style>

@@ -16,6 +16,7 @@
         @update:status="onCheck"
         @create:item="onCreate"
         @clear:item="onClear"
+        :windowSize="windowSize"
       ></todo-list>
 
       <schedule v-if="showContent == 'Schedule'" 
@@ -24,6 +25,7 @@
         @update:item="onEdit"
         @update:status="onCheck"
         @create:item="onCreate"
+        :windowSize="windowSize"
       ></schedule>
       
     </div>
@@ -44,6 +46,7 @@ export default {
     Schedule,
   },
   setup() {
+    const windowSize =ref(window.innerWidth);
     const todoData = ref([
       // {
       //   index: 0,
@@ -57,11 +60,11 @@ export default {
       //   },
       // }
       ]);
-    const showContent = ref('Schedule');
+    const showContent = ref('TodoList');
     function onCreate(data) {
   
       todoData.value.push({
-        index: todoData.value.length,
+        code: rand,
         text: data.text,
         status: false,
         time: getTime(),
@@ -96,6 +99,7 @@ export default {
     }
 
     function onDelete(data) {
+      console.log(data)
       if (confirm('本当に削除してもよろしいですか？')) {
         todoData.value.splice(data, 1);
  
@@ -133,6 +137,7 @@ export default {
       onDelete,
       onEdit,
       onCreate,
+      windowSize,
     };
   },
   methods: {
@@ -149,7 +154,8 @@ li {
 
 ul,
 li,
-p {
+p ,
+h1{
   padding: 0;
   margin: 0;
 }

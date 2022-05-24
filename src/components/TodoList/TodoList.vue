@@ -17,7 +17,7 @@
         :key="todo.index"
         :todo="todo"
         :source="'todolist'"
-        @delete:item="$emit('delete:item', todo.index)"
+        @delete:item="$emit('delete:item', todoList.indexOf(todo.index))"
         @update:item="$emit('update:item', todo.index, $event)"
         @update:status="$emit('update:status', todo.index)"
       ></todo-item>
@@ -33,7 +33,7 @@ export default {
   name: 'TodoList-Component',
   components: { TodoItem, TodoMenu },
 
-  props: ['todoList'],
+  props: ['windowSize', 'todoList'],
   emits: [
     'update:item',
     'delete:item',

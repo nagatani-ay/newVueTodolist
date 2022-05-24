@@ -1,35 +1,21 @@
 <template>
   <li @dblclick="toggleEdit">
-    <custom-button v-if="sourceType == 'todolist'" @click="toggleEdit">{{
-      isEdit ? 'cancel' : 'edit'
-    }}</custom-button>
-    <custom-button 
-      v-if="sourceType == 'schedule' && isEdit" 
-      @click="toggleEdit"
-      >×</custom-button>
-    <div class="todo__edititem" v-if="isEdit">
-      <custom-button
-        @click="
-          $emit('delete:item');
-          toggleEdit;
-        "
-      ><i class="delete--icon"></i></custom-button>
-
-      <custom-input type="text" v-model="tempText"></custom-input>
-      <custom-input
-        v-if="sourceType == 'todolist'"
-        type="date"
-        v-model="tempDeadline">
-      </custom-input>
-      <custom-Button @click="confirmEdit">
-        <i class="confirm--icon">
-      </custom-button>
+    <custom-button v-if="sourceType == 'todolist'" @click="toggleEdit">edit</custom-button>
+   
+    <div class="EditMenu" v-if="isEdit">
+      <div class="editMenuButton">
+        <custom-button @click="toggleEdit">×</custom-button>
+        <custom-button @click="$emit('delete:item'); toggleEdit;"><i class="delete--icon"></i></custom-button>
+        <custom-Button @click="confirmEdit"><i class="confirm--icon"></custom-button>
+      </div>
+      <div class="editMenuInput">
+        <custom-input type="text" v-model="tempText"></custom-input>
+        <custom-input type="date" v-model="tempDeadline"></custom-input>
+      </div>
     </div>
+   
     <div class="todo__item" v-if="!isEdit">
-      <custom-checkbox
-        :modelValue="todo.status"
-        @update:modelValue="$emit('update:status')"
-      ></custom-checkbox>
+      <custom-checkbox :modelValue="todo.status" @update:modelValue="$emit('update:status')"></custom-checkbox>
       <span>
         <span class="item__text">{{ todo.text }}</span>
         <span v-if="sourceType == 'todolist'" class="item__time">
@@ -85,6 +71,14 @@ export default {
       return list;
     }
 
+    function enter(){
+        console.log(enter)
+    }
+
+    function leave(){
+      console.log(leave)
+    }
+
     return {
       isEdit,
       tempText,
@@ -92,6 +86,8 @@ export default {
       toggleEdit,
       confirmEdit,
       sourceType,
+      enter,
+      leave,
     };
   },
 };
@@ -109,13 +105,25 @@ li,
   display: flex;
   flex-wrap:wrap;
   align-items: center;
+  position:relative;
 }
 
+.EditMenu{
+  position:absolute;
+  top:0;
+  background-color:white;
+  z-index:2;
+  border:solid 1px black;
+}
+.editMenuButton{
+  display:flex;
+}
 .item__time {
   font-size: 0.6em;
   color: lightgrey;
   text-align: right;
 }
+
 
 .delete--icon {
   display: block;
@@ -132,5 +140,21 @@ li,
   height: 16px;
   background-repeat: no-repeat;
   background-size: 100% 100%;
+}
+
+
+
+.slide-fade-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateX(20px);
+  opacity: 0;
 }
 </style>

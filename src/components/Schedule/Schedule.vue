@@ -1,39 +1,65 @@
 <template>
-  <button @click="onChange(-1)">←</button>
-  <span class="calendar__title">{{ selectYear }}年{{ selectMonth }}月</span>
-  <button @click="onChange(1)">→</button>
+  <div class="calendar__menu">
+    <custom-button class="calendar__menu__button" @click="onChange(-1)"
+      ><span class="menu__button__text">←</span></custom-button
+    >
+    <span class="calendar__title">{{ selectYear }}年{{ selectMonth }}月</span>
+    <custom-button class="calendar__menu__button" @click="onChange(1)"
+      ><span class="menu__button__text">→</span></custom-button
+    >
+  </div>
   <div class="Schedule">
-    <div class="header">
-      <div class="calendar__weekday" v-for="dayOfWeek in dayOfWeeks">
-        <p class="calendar__day,dayOfWeek">{{ dayOfWeek }}</p>
+    <div class="calenndar__header">
+      <div
+        class="calendar__dayOfWeek"
+        :class="dayOfWeek"
+        v-for="dayOfWeek in dayOfWeeks"
+      >
+        <p v-if="windowSize >= 800">{{ dayOfWeek }}</p>
+        <p v-if="windowSize < 800">{{ dayOfWeek.slice(0, 3) }}</p>
       </div>
     </div>
-    <div class="body">
+    <div class="calenndar__body">
       <div
         class="calender__table"
+        :class="dayitem.dayofweek"
         v-for="dayitem in dayList"
         :key="dayitem.date"
       >
-        <p class="calendar__day,day">{{ dayitem.date.day }}</p>
-        <add-menu
-          @create:item="$emit('create:item', $event)"
-          :source="'schedule'"
-          :selectDate="dayitem.date"
-        ></add-menu>
-
-        <div v-if="todoDeadlineList[Object.values(dayitem.date).join('-')]">
+        <div class="calender__item__header" :class="dayitem.dayofweek">
+          <p
+            class="calendar__day"
+            :class="dayitem.dayofweek"
+            :class="dayitem.date.month == selectMonth ? '' : 'outer__month'"
+          >
+            {{ dayitem.date.day }}
+          </p>
+          <add-menu
+            @create:item="$emit('create:item', $event)"
+            :source="'schedule'"
+            :selectDate="dayitem.date"
+          ></add-menu>
+        </div>
+        <div
+          class="calender__item__body"
+          :class="dayitem.dayofweek"
+          v-if="todoDeadlineList[Object.values(dayitem.date).join('-')]"
+        >
           <ul>
-            <todo-item
-              v-for="item in todoDeadlineList[
-                Object.values(dayitem.date).join('-')
-              ]"
-              :key="item.index"
-              :todo="item"
-              :source="'schedule'"
-              @delete:item="$emit('delete:item', item.index)"
-              @update:item="$emit('update:item', item.index, $event)"
-              @update:status="$emit('update:status', item.index)"
-            ></todo-item>
+            <transition-group name="list">
+              <todo-item
+                class="calender__todo"
+                v-for="item in todoDeadlineList[
+                  Object.values(dayitem.date).join('-')
+                ]"
+                :key="item.index"
+                :todo="item"
+                :source="'schedule'"
+                @delete:item="$emit('delete:item', item.index)"
+                @update:item="$emit('update:item', item.index, $event)"
+                @update:status="$emit('update:status', item.index)"
+              ></todo-item>
+            </transition-group>
           </ul>
         </div>
       </div>
@@ -44,14 +70,23 @@
 import { ref, computed, onMounted } from 'vue';
 import TodoItem from '../TodoList/TodoItem.vue';
 import AddMenu from '../Form/AddMenu.vue';
+import CustomButton from '../Form/Button.vue';
 export default {
-  props: ['todoList'],
-  components: { AddMenu, TodoItem },
+  props: ['todoList', 'windowSize'],
+  components: { AddMenu, TodoItem, CustomButton },
   emits: ['update:item', 'delete:item', 'update:status', 'create:item'],
   setup(props) {
     const selectYear = ref(2022);
     const selectMonth = ref(5);
-    const dayOfWeeks = ['日', '月', '火', '水', '木', '金', '土'];
+    const dayOfWeeks = [
+      'Sunday',
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
+    ];
 
     function onChange(num) {
       selectMonth.value = selectMonth.value + num;
@@ -102,7 +137,9 @@ export default {
       // let nextDays = 0;
       let count = calendarDayList.length % 7;
       let daycount = 0;
-      while (calendarDayList[calendarDayList.length - 1].dayofweek != '土') {
+      while (
+        calendarDayList[calendarDayList.length - 1].dayofweek != 'Saturday'
+      ) {
         calendarDayList.push({
           date: {
             year: selectYear.value,
@@ -118,24 +155,6 @@ export default {
           break;
         }
       }
-
-      // props.todoList.forEach((todo, i) => {
-      //   let index;
-      //   let data = todo;
-      //   todo.deadline.year = parseInt(todo.deadline.year);
-      //   todo.deadline.month = parseInt(todo.deadline.month);
-      //   todo.deadline.day = parseInt(todo.deadline.day);
-
-      //   let a = JSON.stringify(Object.values(todo.deadline));
-      //   calendarDayList.forEach((list, i) => {
-      //     let b = JSON.stringify(Object.values(list.date));
-      //     if (a == b) {
-      //       index = i;
-      //     }
-      //   });
-      //   calendarDayList[index].data.push(data);
-      // });
-
       return calendarDayList;
     });
 
@@ -177,22 +196,91 @@ export default {
   },
 };
 </script>
-<style>
-.header,
-.body {
+<style scoped>
+.calendar__menu {
   display: flex;
-  flex-wrap: wrap;
+  margin: 0, auto;
+  justify-content: center;
+  align-items: center;
+}
+.calendar__menu__button {
+  width: 20px;
+  height: 20px;
+}
+.menu__button__text {
+  width: 100%;
+  height: 100%;
+  padding: 2px 0px;
+}
+.calendar__title {
+  font-size: 1.8em;
+}
+.calenndar__header {
+  display: flex;
   justify-content: space-around;
+  align-items: center;
+  font-weight: bold;
+}
+.calendar__dayOfWeek {
+  width: 100%;
+  text-align: center;
+  border: solid 1px black;
 }
 
-.calender__table,
-.calendar__weekday {
-  width: 12vw;
-  height: 12vw;
-  padding: 2px;
+.calenndar__body {
+  display: grid;
+  align-items: start;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-auto-rows: minmax(150px, auto);
+}
+
+.calender__table {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: solid 1px black;
+}
+
+.calender__item__header {
+  display: flex;
+  justify-content: space-between;
 }
 
 .calendar__day {
-  display: flex;
+  font-size: 1.5em;
+}
+.calender__item__body {
+}
+.calender__todo {
+  color: black;
+  background-color: white;
+  margin: 0 5px;
+}
+.Sunday {
+  color: red;
+  background-color: #ffe6ea;
+}
+.Saturday {
+  color: blue;
+  background-color: #e6f2ff;
+}
+.outer__month {
+  opacity: 0.2;
+}
+@media screen and (max-width: 800px) {
+}
+
+.list-item {
+  display: inline-block;
+  margin-right: 10px;
+}
+.list-enter-active,
+.list-leave-active {
+  transition: all 1s ease;
+}
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  transform: translateY(30px);
 }
 </style>
