@@ -52,12 +52,12 @@
                 v-for="item in todoDeadlineList[
                   Object.values(dayitem.date).join('-')
                 ]"
-                :key="item.index"
+                :key="item.code"
                 :todo="item"
                 :source="'schedule'"
-                @delete:item="$emit('delete:item', item.index)"
-                @update:item="$emit('update:item', item.index, $event)"
-                @update:status="$emit('update:status', item.index)"
+                @delete:item="$emit('delete:item', item.code)"
+                @update:item="$emit('update:item', item.code, $event)"
+                @update:status="$emit('update:status', item.code)"
               ></todo-item>
             </transition-group>
           </ul>
@@ -167,7 +167,7 @@ export default {
           result[key] = [];
         }
         result[key].push({
-          index: todo.index,
+          code: todo.code,
           text: todo.text,
           status: todo.status,
           time: todo.time,

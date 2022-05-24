@@ -14,12 +14,12 @@
     <ul>
       <todo-item
         v-for="todo in listSort"
-        :key="todo.index"
+        :key="todo.code"
         :todo="todo"
         :source="'todolist'"
-        @delete:item="$emit('delete:item', todoList.indexOf(todo.index))"
-        @update:item="$emit('update:item', todo.index, $event)"
-        @update:status="$emit('update:status', todo.index)"
+        @delete:item="$emit('delete:item', todo.code)"
+        @update:item="$emit('update:item', todo.code, $event)"
+        @update:status="$emit('update:status', todo.code)"
       ></todo-item>
     </ul>
   </div>

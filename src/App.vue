@@ -49,7 +49,7 @@ export default {
     const windowSize =ref(window.innerWidth);
     const todoData = ref([
       // {
-      //   index: 0,
+      //   code: 0,
       //   text: "test1",
       //   status: false,
       //   time: getTime(),
@@ -62,15 +62,26 @@ export default {
       ]);
     const showContent = ref('TodoList');
     function onCreate(data) {
-  
       todoData.value.push({
-        code: rand,
+        code: generateID(),
         text: data.text,
         status: false,
         time: getTime(),
         deadline:data.deadline,
       });
     }
+
+
+    function generateID(){
+      const code =Math.random().toString(32).substring(2)
+       todoData.value.forEach((data,i)=>{
+        if(data.code == code) {
+          code =Math.random().toString(32).substring(2)
+        }
+      })
+      return code;
+    }
+
     function onClear() {
       if (confirm('本当に削除してもよろしいですか？')) {
         todoData.value = [];
@@ -101,8 +112,10 @@ export default {
     function onDelete(data) {
       console.log(data)
       if (confirm('本当に削除してもよろしいですか？')) {
-        todoData.value.splice(data, 1);
- 
+        const codes = todoData.value.map((x)=>x.code);
+        console.log(codes)
+        const target = codes.indexOf(data);
+        todoData.value.splice(target, 1);
       }
     }
 
