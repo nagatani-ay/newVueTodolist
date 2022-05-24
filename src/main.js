@@ -9,12 +9,12 @@ const router = VueRouter.createRouter({
   history: VueRouter.createWebHashHistory(),
   routes: [
     {
-      path: '/user',
+      path: '/',
       component: User,
       children: [
-        { path: 'todolist', component: UserTodoList },
+        { path: 'todolist', component: UserTodoList, props: true },
 
-        { path: 'schedule', component: UserSchedule },
+        { path: 'schedule', component: UserSchedule, props: true },
       ],
     },
   ],

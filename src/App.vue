@@ -1,40 +1,14 @@
-<template
-
-  <div id="container">
-    <div class="sideMenu">
-      <side-menu @showContent="showContent = $event"
-      :source="'todomenu'"></side-menu>
-    </div>
-
-    <div class="mainContent">
-      <!-- <h1>{{ showContent }}</h1>           v-if="showContent == 'TodoList'" |v-if="showContent == 'Schedule'" -->
-
-      <!-- <router-link to="/">
-        <todo-list
-          :todoList="todoData"
-          @delete:item="onDelete"
-          @update:item="onEdit"
-          @update:status="onCheck"
-          @create:item="onCreate"
-          @clear:item="onClear"
-          :windowSize="windowSize"
-        ></todo-list>
-      </router-link>
-
-      <router-link to="/schedule">
-      <schedule 
-        :todoList="todoData"
-        @delete:item="onDelete"
-        @update:item="onEdit"
-        @update:status="onCheck"
-        @create:item="onCreate"
-        :windowSize="windowSize"
-      ></schedule>
-      </router-link> -->
-
-        <router-view></router-view>
-    </div>
-  </div>
+<template>
+  <router-view
+    :todoList="todoData"
+    :windowSize="windowSize"
+    @delete:item="onDelete"
+    @update:item="onEdit"
+    @update:status="onCheck"
+    @create:item="onCreate"
+    @clear:item="onClear"
+  >
+  </router-view>
 </template>
 
 <script>
@@ -51,7 +25,7 @@ export default {
     Schedule,
   },
   setup() {
-    const windowSize =ref(window.innerWidth);
+    const windowSize = ref(window.innerWidth);
     const todoData = ref([
       // {
       //   code: 0,
@@ -64,7 +38,7 @@ export default {
       //     day:5,
       //   },
       // }
-      ]);
+    ]);
     const showContent = ref('TodoList');
     function onCreate(data) {
       todoData.value.push({
@@ -72,18 +46,17 @@ export default {
         text: data.text,
         status: false,
         time: getTime(),
-        deadline:data.deadline,
+        deadline: data.deadline,
       });
     }
 
-
-    function generateID(){
-      const code =Math.random().toString(32).substring(2)
-       todoData.value.forEach((data,i)=>{
-        if(data.code == code) {
-          code =Math.random().toString(32).substring(2)
+    function generateID() {
+      const code = Math.random().toString(32).substring(2);
+      todoData.value.forEach((data, i) => {
+        if (data.code == code) {
+          code = Math.random().toString(32).substring(2);
         }
-      })
+      });
       return code;
     }
 
@@ -115,18 +88,18 @@ export default {
     }
 
     function onDelete(data) {
-      console.log(data)
+      console.log(data);
       if (confirm('本当に削除してもよろしいですか？')) {
-        const codes = todoData.value.map((x)=>x.code);
-        console.log(codes)
+        const codes = todoData.value.map((x) => x.code);
+        console.log(codes);
         const target = codes.indexOf(data);
         todoData.value.splice(target, 1);
       }
     }
 
     function onEdit(num, data) {
-      console.log("test")
- 
+      console.log('test');
+
       todoData.value[num].text = data.text;
       todoData.value[num].deadline = data.deadline;
     }
@@ -134,15 +107,13 @@ export default {
     onMounted(() => {
       if (localStorage.getItem('todolist') != '') {
         todoData.value = JSON.parse(localStorage.getItem('todolist'));
-       
       }
     });
 
     watch(
       () => todoData.value,
-      (list,prevList)=> {
-    
-          localStorage.setItem('todolist', JSON.stringify(list));
+      (list, prevList) => {
+        localStorage.setItem('todolist', JSON.stringify(list));
       },
       { deep: true }
     );
@@ -158,9 +129,7 @@ export default {
       windowSize,
     };
   },
-  methods: {
-    
-  },
+  methods: {},
 };
 </script>
 
@@ -172,8 +141,8 @@ li {
 
 ul,
 li,
-p ,
-h1{
+p,
+h1 {
   padding: 0;
   margin: 0;
 }
@@ -194,6 +163,4 @@ h1{
 }
 .mainContent {
 }
-
-
 </style>

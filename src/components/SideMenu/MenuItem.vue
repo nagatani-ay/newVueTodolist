@@ -1,5 +1,7 @@
 <template>
-  <li @click="$emit('select:content', menuName)">{{ menuName }}</li>
+  <router-link :to="menuName">
+    <li>{{ menuName }}</li>
+  </router-link>
 </template>
 
 <script>

@@ -7,10 +7,7 @@
           <menu-item
             class="sidemenu__list__item"
             v-for="menuItem in contentList"
-            @select:content="
-              $emit('showContent', $event);
-              toggleSideMenu();
-            "
+            @click="toggleSideMenu"
             :menuName="menuItem"
           ></menu-item>
         </ul>
@@ -63,19 +60,5 @@ export default {
 }
 li:hover {
   background-color: #f5f5f5;
-}
-
-.slide-fade-enter-active {
-  transition: all 0.3s ease-out;
-}
-
-.slide-fade-leave-active {
-  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
-}
-
-.slide-fade-enter-from,
-.slide-fade-leave-to {
-  transform: translateX(-20px);
-  opacity: 0;
 }
 </style>
