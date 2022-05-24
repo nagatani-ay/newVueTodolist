@@ -9,14 +9,13 @@ const router = VueRouter.createRouter({
   history: VueRouter.createWebHashHistory(),
   routes: [
     {
-      path: '/',
+      path: '/user',
       component: User,
-      children: [{ path: '', component: UserTodoList }],
-    },
-    {
-      path: '/schedule',
-      component: Schedule,
-      children: [{ path: '', component: UserSchedule }],
+      children: [
+        { path: 'todolist', component: UserTodoList },
+
+        { path: 'schedule', component: UserSchedule },
+      ],
     },
   ],
 });
