@@ -9,17 +9,17 @@
     >
   </div>
   <div class="Schedule">
-    <div class="calenndar__header">
+    <div class="calendar__header">
       <div
+        v-if="viewStyle == 'full'"
         class="calendar__dayOfWeek"
         :class="dayOfWeek"
         v-for="dayOfWeek in dayOfWeeks"
       >
-        <p v-if="windowSize >= 800">{{ dayOfWeek }}</p>
-        <p v-if="windowSize < 800">{{ dayOfWeek.slice(0, 3) }}</p>
+        <p>{{ dayOfWeek }}</p>
       </div>
     </div>
-    <div class="calenndar__body">
+    <div class="calendar__body">
       <div
         class="calender__table"
         :class="dayitem.dayofweek"
@@ -27,6 +27,7 @@
         :key="dayitem.date"
       >
         <div class="calender__item__header" :class="dayitem.dayofweek">
+          <p v-if="viewStyle == 'eco'">{{ dayitem.dayofweek.slice(0, 3) }}</p>
           <p
             class="calendar__day"
             :class="dayitem.dayofweek"
@@ -72,7 +73,7 @@ import TodoItem from '../TodoList/TodoItem.vue';
 import AddMenu from '../Form/AddMenu.vue';
 import CustomButton from '../Form/Button.vue';
 export default {
-  props: ['todoList', 'windowSize'],
+  props: ['todoList', 'viewStyle'],
   components: { AddMenu, TodoItem, CustomButton },
   emits: [
     'update:item',
@@ -93,6 +94,7 @@ export default {
       'Friday',
       'Saturday',
     ];
+    const viewStyle = ref('');
 
     function onChange(num) {
       selectMonth.value = selectMonth.value + num;
@@ -221,7 +223,8 @@ export default {
 .calendar__title {
   font-size: 1.8em;
 }
-.calenndar__header {
+
+.calendar__header {
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -233,35 +236,36 @@ export default {
   border: solid 1px black;
 }
 
-.calenndar__body {
-  display: grid;
-  align-items: start;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-  grid-auto-rows: minmax(150px, auto);
+@media screen and (min-width: 800px) {
+  .calendar__body {
+    display: grid;
+    align-items: start;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-auto-rows: minmax(150px, auto);
+  }
+  .calender__table {
+    width: 100%;
+    height: 100%;
+    display: block;
+    border: solid 1px black;
+  }
+  .calendar__day {
+    font-size: 1.5em;
+  }
+  .calender__item__header {
+    display: flex;
+    justify-content: space-between;
+  }
+  .calender__todo {
+    color: black;
+    background-color: white;
+    margin: 0 5px;
+  }
 }
 
-.calender__table {
-  width: 100%;
-  height: 100%;
-  display: block;
-  border: solid 1px black;
-}
-
-.calender__item__header {
-  display: flex;
-  justify-content: space-between;
-}
-
-.calendar__day {
-  font-size: 1.5em;
-}
 .calender__item__body {
 }
-.calender__todo {
-  color: black;
-  background-color: white;
-  margin: 0 5px;
-}
+
 .Sunday {
   color: red;
   background-color: #ffe6ea;
@@ -272,8 +276,6 @@ export default {
 }
 .outer__month {
   opacity: 0.2;
-}
-@media screen and (max-width: 800px) {
 }
 
 .list-item {
@@ -288,5 +290,43 @@ export default {
 .list-leave-to {
   opacity: 0;
   transform: translateY(30px);
+}
+
+@media screen and (max-width: 800px) {
+  .Schedule {
+    display: flex;
+  }
+  .calendar__body {
+    display: block;
+    width: 100%;
+  }
+  .calender__table {
+    height: 80px;
+    display: flex;
+    border: solid 2px black;
+    margin-bottom: 5px;
+  }
+  .calender__item__header {
+    display: block;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 15%;
+    border-right: dotted 1px black;
+  }
+  .calendar__day {
+    font-size: 1.2em;
+    font-weight: bold;
+  }
+  .todo__addMenu--schedule {
+    display: flex;
+    justify-content: center;
+  }
+  .calender__item__body {
+    width: 85%;
+  }
+  .calender__todo {
+    color: black;
+  }
 }
 </style>

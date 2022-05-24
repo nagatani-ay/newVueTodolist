@@ -6,7 +6,7 @@
     <div class="mainContent">
       <router-view
         :todoList="todoList"
-        :windowSize="windowSize"
+        :viewStyle="viewStyle"
         @delete:item="$emit('delete:item', $event)"
         @update:item="$emit('update:item', $event)"
         @update:status="$emit('update:status', $event)"
@@ -21,7 +21,7 @@
 import SideMenu from '../components/SideMenu/SideMenu.vue';
 export default {
   components: { SideMenu },
-  props: ['todoList', 'windowSize'],
+  props: ['todoList', 'viewStyle'],
   emits: [
     'delete:item',
     'update:item',
@@ -43,5 +43,18 @@ export default {
 }
 .mainContent {
   width: 90%;
+}
+
+@media screen and (max-width: 800px) {
+  #container {
+    display: block;
+  }
+  .sideMenu {
+    display: flex;
+    position: absolute;
+  }
+  .mainContent {
+    width: 100%;
+  }
 }
 </style>

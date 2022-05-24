@@ -1,8 +1,8 @@
 <template>
-  <h1>Schedule</h1>
+  <h1 class="content__title">Schedule</h1>
   <schedule
     :todoList="todoList"
-    :windowSize="windowSize"
+    :viewStyle="viewStyle"
     @delete:item="$emit('delete:item', $event)"
     @update:item="$emit('update:item', $event)"
     @update:status="$emit('update:status', $event)"
@@ -14,7 +14,7 @@
 import Schedule from '../components/Schedule/Schedule.vue';
 export default {
   components: { Schedule },
-  props: ['todoList', 'windowSize'],
+  props: ['todoList', 'viewStyle'],
   emits: [
     'delete:item',
     'update:item',
@@ -26,4 +26,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.content__title {
+  text-align: center;
+}
+</style>

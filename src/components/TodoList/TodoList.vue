@@ -33,7 +33,7 @@ export default {
   name: 'TodoList-Component',
   components: { TodoItem, TodoMenu },
 
-  props: ['windowSize', 'todoList'],
+  props: ['viewStyle', 'todoList'],
   emits: [
     'update:item',
     'delete:item',

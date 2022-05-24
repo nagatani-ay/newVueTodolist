@@ -2,7 +2,7 @@
   <h1>TodoList</h1>
   <todo-list
     :todoList="todoList"
-    :windowSize="windowSize"
+    :viewStyle="viewStyle"
     @delete:item="$emit('delete:item', $event)"
     @update:item="$emit('update:item', $event)"
     @update:status="$emit('update:status', $event)"
@@ -15,7 +15,7 @@
 import TodoList from '../components/TodoList/TodoList.vue';
 export default {
   components: { TodoList },
-  props: ['todoList', 'windowSize'],
+  props: ['todoList', 'viewStyle'],
   emits: [
     'delete:item',
     'update:item',

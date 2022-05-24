@@ -1,7 +1,7 @@
 <template>
   <router-view
     :todoList="todoData"
-    :windowSize="windowSize"
+    :viewStyle="viewStyle"
     @delete:item="onDelete"
     @update:item="onEdit"
     @update:status="onCheck"
@@ -25,7 +25,7 @@ export default {
     Schedule,
   },
   setup() {
-    const windowSize = ref(window.innerWidth);
+    let viewStyle = ref(setViewStyle());
     const todoData = ref([
       // {
       //   code: 0,
@@ -39,7 +39,6 @@ export default {
       //   },
       // }
     ]);
-    const showContent = ref('TodoList');
     function onCreate(data) {
       todoData.value.push({
         code: generateID(),
@@ -48,6 +47,13 @@ export default {
         time: getTime(),
         deadline: data.deadline,
       });
+    }
+    function setViewStyle() {
+      if (window.innerWidth < 800) {
+        return 'eco';
+      } else {
+        return 'full';
+      }
     }
 
     function generateID() {
@@ -123,14 +129,13 @@ export default {
     );
     return {
       todoData,
-      showContent,
       onCheck,
       getTime,
       onClear,
       onDelete,
       onEdit,
       onCreate,
-      windowSize,
+      viewStyle,
     };
   },
   methods: {},

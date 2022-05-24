@@ -20,5 +20,4 @@ export default {
 .sidemenu__item:hover {
   background-color: #f5f5f5;
 }
-
 </style>
