@@ -21,12 +21,12 @@
     </div>
     <div class="calendar__body">
       <div
-        class="calender__table"
+        class="calendar__table"
         :class="dayitem.dayofweek"
         v-for="dayitem in dayList"
         :key="dayitem.date"
       >
-        <div class="calender__item__header" :class="dayitem.dayofweek">
+        <div class="calendar__item__header" :class="dayitem.dayofweek">
           <p v-if="viewStyle == 'eco'">{{ dayitem.dayofweek.slice(0, 3) }}</p>
           <p
             class="calendar__day"
@@ -42,14 +42,20 @@
           ></add-menu>
         </div>
         <div
-          class="calender__item__body"
+          class="calendar__item__body"
           :class="dayitem.dayofweek"
           v-if="todoDeadlineList[Object.values(dayitem.date).join('-')]"
         >
-          <ul>
+          <ul
+            class="calendar__droparea"
+            @drop="onDrop($event)"
+            @dragover.prevent
+            @dragenter=""
+            @dragleave=""
+          >
             <transition-group appear name="list">
               <todo-item
-                class="calender__todo"
+                class="calendar__todo"
                 v-for="item in todoDeadlineList[
                   Object.values(dayitem.date).join('-')
                 ]"
@@ -106,6 +112,10 @@ export default {
         selectYear.value++;
         selectMonth.value = 1;
       }
+    }
+
+    function onDrop(event) {
+      console.log(event);
     }
 
     const dayList = computed(() => {
@@ -235,6 +245,10 @@ export default {
   text-align: center;
   border: solid 1px black;
 }
+.calendar__droparea {
+  width: 100%;
+  height: 100%;
+}
 
 @media screen and (min-width: 800px) {
   .calendar__body {
@@ -243,7 +257,7 @@ export default {
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
     grid-auto-rows: minmax(150px, auto);
   }
-  .calender__table {
+  .calendar__table {
     width: 100%;
     height: 100%;
     display: block;
@@ -252,18 +266,18 @@ export default {
   .calendar__day {
     font-size: 1.5em;
   }
-  .calender__item__header {
+  .calendar__item__header {
     display: flex;
     justify-content: space-between;
   }
-  .calender__todo {
+  .calendar__todo {
     color: black;
     background-color: white;
     margin: 0 5px;
   }
 }
 
-.calender__item__body {
+.calendar__item__body {
 }
 
 .Sunday {
@@ -300,13 +314,13 @@ export default {
     display: block;
     width: 100%;
   }
-  .calender__table {
+  .calendar__table {
     height: 80px;
     display: flex;
     border: solid 2px black;
     margin-bottom: 5px;
   }
-  .calender__item__header {
+  .calendar__item__header {
     display: block;
     justify-content: center;
     align-items: center;
@@ -322,10 +336,10 @@ export default {
     display: flex;
     justify-content: center;
   }
-  .calender__item__body {
+  .calendar__item__body {
     width: 85%;
   }
-  .calender__todo {
+  .calendar__todo {
     color: black;
   }
 }

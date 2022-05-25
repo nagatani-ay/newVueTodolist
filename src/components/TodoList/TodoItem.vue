@@ -1,5 +1,8 @@
 <template>
-  <li >
+  <li 
+    draggable = "true"
+    @dragstart = "" 
+    @dragend = "">
     <custom-button v-if="sourceType == 'todolist'" @click="toggleEdit">edit</custom-button>
    
     <div class="EditMenu" v-if="isEdit">

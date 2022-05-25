@@ -12,9 +12,9 @@ const router = VueRouter.createRouter({
       path: '/',
       component: User,
       children: [
-        { path: 'todolist', component: UserTodoList, props: true },
+        { path: 'todolist', component: UserTodoList },
 
-        { path: 'schedule', component: UserSchedule, props: true },
+        { path: 'schedule', component: UserSchedule },
       ],
     },
   ],
