@@ -46,13 +46,7 @@
           :class="dayitem.dayofweek"
           v-if="todoDeadlineList[Object.values(dayitem.date).join('-')]"
         >
-          <ul
-            class="calendar__droparea"
-            @drop="onDrop($event)"
-            @dragover.prevent
-            @dragenter=""
-            @dragleave=""
-          >
+          <ul class="calendar__droparea">
             <transition-group appear name="list">
               <todo-item
                 class="calendar__todo"
